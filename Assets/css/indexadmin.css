@@ -1,0 +1,151 @@
+﻿.card {
+    background-color: snow;
+    color: white;
+}
+
+h2 {
+    font-family: Helvetica;
+    font-weight: bold
+}
+
+h5 {
+    font-family: Helvetica;
+    font-weight: bold
+}
+
+.aaa {
+    color: white;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+}
+
+.hero {
+    width: 100%;
+    min-height: 300px;
+    background: linear-gradient(45deg, #08001f, #30197d);
+    color: #fff;
+    position: relative;
+}
+
+.container1 {
+    width: 400px;
+    height: 180px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.clock {
+    width: 100%;
+    height: 100%;
+    background: rgba(235, 0, 255, 0.11);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(40px);
+}
+
+.container1::before {
+    content: '';
+    width: 100px;
+    height: 100px;
+    background: #f41b75;
+    border-radius: 5px;
+    position: absolute;
+    left: -50px;
+    top: -50px;
+    z-index: -1;
+}
+
+.container1::after {
+    content: '';
+    width: 100px;
+    height: 100px;
+    background: #419aff;
+    border-radius: 50%;
+    position: absolute;
+    right: -30px;
+    bottom: -50px;
+    z-index: -1;
+}
+
+.clock span {
+    font-size: 60px;
+    width: 80px;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+}
+
+    .clock span::after {
+        font-size: 16px;
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translate(-50%);
+    }
+
+#hrs::after {
+    content: 'GIỜ';
+}
+
+#min::after {
+    content: 'PHÚT';
+}
+
+#sec::after {
+    content: 'GIÂY';
+}
+
+.hero1 {
+    width: 100%;
+    min-height: 300px;
+    background: linear-gradient(45deg, #1d0000, #20205b);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar {
+    width: 300px;
+    height: 250px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+.left1,
+.right1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-direction: column;
+    height: 100%; /* Ensures vertical centering */
+}
+
+.right1 {
+    width: 42%;
+    background: #f4351e;
+    color: #fff;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.left1 {
+    width: 58%;
+}
+
+#date {
+    font-size: 100px;
+    line-height: 90px;
+}

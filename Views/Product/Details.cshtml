@@ -1,0 +1,702 @@
+﻿
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var CTHangHoa = (List<dotMVC.Data.cthanghoa>)ViewData["CTHangHoa"];
+    var Sizes = ((List<dotMVC.Data.sizegiay>)ViewData["Size"]).ToList();
+    var Color = ((List<dotMVC.Data.mausac>)ViewData["Colors"]).ToList();
+    var Image = ((List<dotMVC.Data.anhct>)ViewData["Image"]).Select(x => x.anh.ToString()).ToList();
+    var SpLienQuan = (List<dotMVC.Data.hanghoa>)ViewData["SpLienQuan"];
+}
+@model IEnumerable<dotMVC.Data.hanghoa>
+@using Microsoft.AspNet.Identity
+
+
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+}
+<br />
+<h2 class="heading"><span>Chi Tiết </span> Sản Phẩm </h2>
+
+<br />
+<style>
+    .heading {
+        text-align: center;
+        font-size: 3rem;
+        color: black;
+        padding: 1rem;
+        margin: 1rem 0;
+        background: rgba(255, 51, 153, 0.05);
+    }
+
+        .heading span {
+            color: var(--red);
+        }
+
+    :root {
+        --red: #FF0000;
+    }
+</style>
+
+@foreach (var product in Model)
+{
+
+
+    <!-- Open Content -->
+
+    <section class="container">
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <br />
+                <br />
+                <div class="card custom-card" style="height: 720px;">
+                    <img class="img-fluid" style="width:100%;height:100%" src="@Url.Content("~/Assets/img/" + ViewData["ProductImageName"])" alt="Card image cap" id="product-detail">
+                </div>
+                <div id="relatedProductsCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < Image.Count; i += 4)
+                        {
+                            <div class="carousel-item @(i == 0 ? "active" : "")">
+                                <div class="row">
+                                    @for (int j = i; j < i + 4 && j < Image.Count; j++)
+                                    {
+                                        var image = Image[j];
+                                        <div class="col">
+                                            <a>
+                                                <img class="card-img img-fluid small-image" src="~/Assets/img/@image" alt="Product Image @j">
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <a class="carousel-control-prev" href="#relatedProductsCarousel" role="button" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#relatedProductsCarousel" role="button" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </a>
+                </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var carouselImages = document.querySelectorAll('#relatedProductsCarousel .carousel-item img');
+                        var productImage = document.getElementById('product-detail');
+
+                        carouselImages.forEach(function (image) {
+                            image.addEventListener('click', function () {
+                                productImage.src = image.src;
+                                productImage.alt = image.alt;
+                            });
+                        });
+                    });
+                </script>
+            </div>
+            <style>
+                <style >
+                .carousel-inner .col {
+                    padding: 5px; /* Optional: Add some padding around each image */
+                }
+
+                .carousel-inner .small-image {
+                    width: 150px;
+                    height: 150px;
+                    object-fit: cover;
+                    .carousel-inner .col
+
+                {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            </style>
+
+            </style>
+            <!-- Close col-lg-6 -->
+
+            <div class="col-lg-6 col-12 mt-5">
+                <div class="row">
+                    <div class="col">
+                        <h1 class="h2">@product.tenhh</h1>
+
+                        @if (Convert.ToInt32(ViewData["ProductDiscount"]) == 0)
+                        {
+                            <div class="product-discount" style="display: none;">
+                                @string.Format("{0:N0}", ViewData["ProductDiscount"]) VND ->
+                            </div>
+                            <div class="product-price">
+                                @string.Format("{0:N0}", ViewData["ProductPrice"]) VND
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="product-price">
+                                <p>
+                                    @string.Format("{0:N0}", ViewData["ProductPrice"]) VND ->
+                                </p>
+                                <div class="product-discount">
+                                    @string.Format("{0:N0}", ViewData["ProductDiscount"]) VND
+                                </div>
+                            </div>
+                        }
+
+
+
+
+                        <p class="py-2">
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-warning"></i>
+                            <i class="fa fa-star text-secondary"></i>
+                            <span class="list-inline-item text-dark">Rating 4.8 | 36 Comments</span>
+                        </p>
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                @*<h6>Brand:</h6>*@
+                            </li>
+                            <li class="list-inline-item">
+                                <p class="text-muted"><strong>Easy Wear</strong></p>
+                            </li>
+                        </ul>
+
+                        <h6>Mô tả:</h6>
+
+                        <p>@Html.Raw(product.mota)</p>
+
+                        <ul class="list-inline">
+                            <hr />
+                            <li class="list-inline-item">
+                                <h5>Color </h5>
+
+
+                            </li>
+                            @foreach (var color in Color)
+                            {
+                                <li class="list-inline-item">
+                                    <button type="button" name="color" class=" btn-color" onclick="getColor(this)" data-color="@color.Idmau">@color.mausac1</button>
+                                </li>
+                            }
+
+
+
+                        </ul>
+
+                        <hr />
+
+                        <form action="" method="GET">
+                            <input type="hidden" name="product-title" value="Activewear">
+                            <div class="row">
+                                <div class="col-auto">
+                                    <ul class="list-inline pb-3">
+                                        <li class="list-inline-item">
+                                            <h5>Size : </h5>
+                                            <input type="hidden" name="product-size" id="product-size" value="37">
+                                        </li>
+                                        <ul class="account_section">
+                                            <li class="nav-item">
+
+                                            </li>
+                                        </ul>
+                                        @foreach (var size in Sizes)
+                                        {
+                                            <li class="list-inline-item">
+                                                <button type="button" name="size" class=" btn-sizes" onclick="getSize(this)" data-size="@size.Idsize">@size.size</button>
+                                            </li>
+
+                                        }
+
+                                    </ul>
+                                    <hr />
+                                    <style>
+
+                                        .btn-sizes, .btn-color {
+                                            border: none;
+                                            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+                                            width: 50px;
+                                            height: 50px;
+                                            margin: 5px;
+                                            cursor: pointer;
+                                            background-color: white;
+                                            color: black;
+                                            border-radius: 50%;
+                                            transition: box-shadow 0.3s, background-color 0.3s, transform 0.3s, color 0.3s;
+                                        }
+
+                                            .btn-sizes.SizeSelected, .btn-color.ColorSelected {
+                                                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+                                                background-color: black;
+                                                transform: scale(1.2);
+                                                color: white;
+                                            }
+
+                                            .btn-sizes:not(.SizeSelected), .btn-color:not(.ColorSelected) {
+                                                background-color: white;
+                                            }
+
+                                            .btn-sizes:hover, .btn-color:hover {
+                                                transform: translateY(-4px);
+                                            }
+
+                                        .product-price {
+                                            display: flex;
+                                            align-items: center;
+                                        }
+
+                                            .product-price p {
+                                                margin-bottom: 0; /* Loại bỏ khoảng cách dưới của đoạn văn bản */
+                                                text-decoration: line-through; /* Áp dụng gạch ngang */
+                                                color: #999; /* Màu chữ xám cho giá gạch ngang */
+                                                margin-right: 10px; /* Khoảng cách giữa giá gốc và giảm giá */
+                                            }
+
+                                        .product-discount {
+                                            color: red; /* Màu đỏ cho giá giảm */
+                                        }
+                                    </style>
+
+                                </div>
+                                <div class="col-auto">
+                                    <a href="#" id="size-chart-link" data-bs-toggle="modal" data-bs-target="#size-chart-modal">Size Chart</a>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="size-chart-modal" tabindex="-1" aria-labelledby="size-chart-modal-label" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title text-center" id="size-chart-modal-label">Size Chart</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <img src="~/Assets/img/about/sizechart.jpg" alt="Size Chart" class="img-fluid">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <br />
+
+                            </div>
+
+
+
+                        </form>
+                        <form>
+                            <div class="row">
+                                <div class="col">
+                                    <ul class="list-inline pb-3">
+                                        <li class="list-inline-item text-right">
+                                            Số lượng
+                                            <input type="hidden" name="product-quantity" id="product-quantity" value="1">
+                                        </li>
+                                        <li class="list-inline-item"><span class="btn btn-circle" id="btn-minus">-</span></li>
+                                        <li class="list-inline-item"><span class="badge bg-secondary" id="var-value">1</span></li>
+                                        <li class="list-inline-item"><span class="btn btn-circle" id="btn-plus">+</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </form>
+                        <style>
+                            .btn-circle {
+                                border-radius: 50%; /* Biến nút thành hình tròn */
+                                width: 40px; /* Chiều rộng của nút */
+                                height: 40px; /* Chiều cao của nút */
+                                line-height: 30px; /* Đặt dòng chữ chính giữa nút */
+                                transition: background-color 0.3s, transform 0.3s; /* Hiệu ứng chuyển đổi */
+                            }
+
+
+
+                                .btn-circle:hover {
+                                    transform: scale(1.1);
+                                    cursor: pointer;
+                                }
+
+                            .btn-minus, .btn-plus {
+                                background-color: hotpink;
+                            }
+                        </style>
+                        <form>
+                            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha384-xA0XYA4BG34zcW1+K9GUrbfp4Vvbj+AOttoLz9CEhtBfJH4eELTpIHyhx9YSoAQ0" crossorigin="anonymous">
+
+                            <div class="container">
+                                <div class="row pb-2">
+                                    <div class="col-md-6">
+                                        <button type="submit" class="cart btn btn-dark" style="width:200px" name="submit" value="addtocard" onclick="themGiohang(this)" data-url="/Product/ThemGioHang/@product.mahh">
+                                            <i class="fas fa-cart-plus" style="color: #e7eb05;"></i> Add To Cart
+                                        </button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button type="submit" class="cart btn btn-dark" style="width:200px" name="submit" value="addtofavorites" onclick="themYeuThich(this)" data-url="/Product/ThemYeuThich/@product.mahh">
+                                            <i class="fas fa-heart" style="color: #e7eb05;"></i> Add To Favorites
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+
+
+
+                        </form>
+                        <style>
+
+                            button.buy, button.cart {
+                                background-color:;
+                                border: none;
+                                color: #fff;
+                                font-size: 18px;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                padding: 8px 20px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                border-radius: 10px;
+                                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                            }
+
+                                button.buy:hover, button.cart:hover {
+                                    transform: translateY(-2px);
+                                }
+
+                                button.buy i, button.cart i {
+                                    margin-right: 5px;
+                                }
+
+                            button.buy {
+                                background-color: #000;
+                            }
+
+                            button.cart {
+                                background-color: #000;
+                            }
+
+                            button.buy i {
+                                color: #007a08;
+                            }
+
+                            button.cart i {
+                                color: #e7eb05;
+                            }
+
+                            button.buy:hover, button.cart:hover {
+                                transform: translateY(-4px);
+                            }
+
+                            .fly-to-cart {
+                                position: absolute;
+                                width: 20px;
+                                height: 20px;
+                                background: #e7eb05;
+                                border-radius: 50%;
+                                opacity: 0;
+                                transition: transform 1s ease-in-out, opacity 1s ease-in-out;
+                            }
+                        </style>
+
+
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- Close col-lg-6 -->
+        </div>
+        <!-- Close row -->
+    </section>
+    <!-- Close Content -->
+}
+<div class="container text-center">
+    <br />
+    <br />
+    <br />
+    <br />
+
+    <div class="row g-4">
+        <div class="container text-center">
+            <br />
+            <h2 class="heading"><span>Bình luận </span> <span>Sản phẩm</span> </h2>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="border-bottom rounded">
+                        <input type="email" class="form-control border-0" id="email" placeholder="Your Email *" value="" readonly>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="border-bottom rounded my-4">
+                        <textarea name="review" id="review" class="form-control border-0" cols="30" rows="8" placeholder="Your Review *" spellcheck="false"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="d-flex justify-content-between py-3 mb-5">
+                        <div class="d-flex align-items-center">
+                            <p class="mb-0 me-3">Please rate:</p>
+                            <div class="d-flex align-items-center" style="font-size: 12px;">
+                                <i class="fa fa-star text-muted"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                            </div>
+                        </div>
+                        <button class="btn border border-secondary text-primary rounded-pill px-4 py-3" id="">Post Comment</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
+</div>
+
+<section>
+    <div class="container text-center">
+        <h2 class="heading"><span>Sản Phẩm </span> liên quan </h2>
+        <div id="relatedProductsCarousel" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                @if (SpLienQuan != null && SpLienQuan.Any())
+                {
+                    <div class="carousel-item active">
+                        <div class="row">
+                            @foreach (var product in SpLienQuan)
+                            {
+                                <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                                    @Html.Action("itemProduct", "Product", new { hh = product })
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="carousel-item active">
+                        <p>No related products found.</p>
+                    </div>
+                }
+            </div>
+
+            <a class="carousel-control-prev" href="#relatedProductsCarousel" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#relatedProductsCarousel" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+</section>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Initialize the Bootstrap carousel
+        var carouselElement = document.querySelector('#relatedProductsCarousel');
+        var carousel = new bootstrap.Carousel(carouselElement, {
+            interval: 2000, // 2 seconds
+            wrap: true
+        });
+
+        // Optional: Add event listeners for the control buttons if needed
+        document.querySelector('.carousel-control-prev').addEventListener('click', () => {
+            carousel.prev();
+        });
+
+        document.querySelector('.carousel-control-next').addEventListener('click', () => {
+            carousel.next();
+        });
+    });
+</script>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+<style>
+    .carousel-inner .small-image:hover {
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+
+
+<!-- Close Content -->
+}
+
+<section>
+</section>
+
+
+<section>
+</section>
+@section scripts
+    {
+    <script>
+
+        $(document).ready(function () {
+            var currentValue = 1; // Giá trị ban đầu là 1
+
+            $('#btn-plus').click(function () {
+                currentValue++; // Tăng giá trị lên 1 đơn vị
+                $('#var-value').text(currentValue); // Cập nhật giá trị mới vào #var-value
+            });
+
+            $('#btn-minus').click(function () {
+                if (currentValue > 1) { // Đảm bảo giá trị không nhỏ hơn 1
+                    currentValue--; // Giảm giá trị đi 1 đơn vị
+                    $('#var-value').text(currentValue); // Cập nhật giá trị mới vào #var-value
+                }
+            });
+
+           
+        });
+
+
+        function getColor(e) {
+            let color = document.querySelectorAll(".btn-color");
+            for (i of color) {
+                i.classList.remove("ColorSelected");
+            }
+            e.classList.add("ColorSelected")
+        }
+        function getSize(e) {
+            let size = document.querySelectorAll(".btn-sizes");
+            for (i of size) {
+                i.classList.remove("SizeSelected");
+            }
+            e.classList.add("SizeSelected")
+        }
+        function themGiohang(e) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+            var url = e.dataset.url;
+            let color = document.querySelector(".ColorSelected");
+            let size = document.querySelector(".SizeSelected");
+            let soluong = document.getElementById("var-value");
+
+            if (color == null || size == null || soluong == null) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Vui lòng chọn size và màu!'
+                });
+            } else {
+                color = color.dataset.color;
+                size = size.dataset.size;
+                soluong = soluong.innerHTML;
+                url = `https://localhost:44388${url}?color=${color}&size=${size}&sl=${soluong}`;
+
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.message === "true") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: 'Sản phẩm đã được thêm vào giỏ hàng!',
+                                showCancelButton: true,
+                                confirmButtonText: 'Xem giỏ hàng',
+                                cancelButtonText: 'Tiếp tục mua sắm'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "https://localhost:44388/Product/GioHang"; // Chuyển hướng đến trang giỏ hàng
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: data.error
+                            });
+                        }
+                    });
+            }
+        }
+        function themYeuThich(e) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+            var url = e.dataset.url;
+            let color = document.querySelector(".ColorSelected");
+            let size = document.querySelector(".SizeSelected");
+
+            if (color == null || size == null) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Vui lòng chọn size và màu!'
+                });
+            } else {
+                color = color.dataset.color;
+                size = size.dataset.size;
+                url = `https://localhost:44388${url}?color=${color}&size=${size}`;
+
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.message === "true") {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công!',
+                                text: 'Sản phẩm đã được thêm vào danh sách yêu thích!',
+                                showCancelButton: true,
+                                confirmButtonText: 'Xem danh sách yêu thích',
+                                cancelButtonText: 'Tiếp tục mua sắm'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = "https://localhost:44388/Product/Yeuthich"; // Chuyển hướng đến trang danh sách yêu thích
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: data.error
+                            });
+                        }
+                    });
+            }
+        }
+
+
+
+        function muaHangNgay(e) {
+
+            //e.preventDefault();
+            var url = e.dataset.url;
+            let color = document.querySelector(".ColorSelected");
+
+            let size = document.querySelector(".SizeSelected");
+            let soluong = document.getElementById("var-value");
+            if (color == null || size == null || soluong == null) {
+                alert("Vui lòng chọn size và màu");
+            } else {
+                color = color.dataset.color;
+                size = size.dataset.size;
+                soluong = soluong.innerHTML;
+                /*console.log(size,color,soluong)*/
+                url = "https://localhost:44388" + url + `?color=${color}&size=${size}&sl=${soluong}`
+
+                window.location.href = url;
+            }
+        }
+
+
+    </script>
+
+}
+

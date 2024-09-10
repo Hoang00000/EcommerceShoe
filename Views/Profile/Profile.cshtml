@@ -1,0 +1,66 @@
+﻿@model dotMVC.Data.AspNetUser
+
+@{
+    ViewBag.Title = "Thông tin cá nhân";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mt-4 text-center">Quản Lý Tài Khoản</h2>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4 text-center mb-4">
+            <h4>Ảnh đại diện</h4>
+            @if (!string.IsNullOrEmpty(Model.Image))
+            {
+                <img src="@Url.Content(Model.Image)" class="img-fluid rounded-circle profile-picture mb-3" alt="Ảnh đại diện của @Model.UserName">
+            }
+            else
+            {
+                <img src="@Url.Content("~/assets/img/avatar-trang-4.jpg")" class="img-fluid rounded-circle profile-picture mb-3" alt="Ảnh đại diện mặc định">
+            }
+            <h5 class="card-title">@Model.UserName</h5>
+            <div class="btn-group mt-3" role="group">
+                <a href="@Url.Action("EditProfile", new { id = Model.Id })" class="btn btn-primary">Chỉnh Sửa</a>
+                <a href="@Url.Action("DonHang", new { id = Model.Id })" class="btn btn-info">Lịch Sử Đơn Hàng</a>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Quay Lại</a>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card p-4">
+                <h5 class="mb-4">Thông tin tài khoản</h5>
+                <table class="table table-borderless">
+                    <tr>
+                        <td class="text-primary font-weight-bold">Email:</td>
+                        <td>@Html.DisplayFor(model => model.Email)</td>
+                    </tr>
+                    <tr>
+                        <td class="text-primary font-weight-bold">Số điện thoại:</td>
+                        <td>@Html.DisplayFor(model => model.PhoneNumber)</td>
+                    </tr>
+                    <tr>
+                        <td class="text-primary font-weight-bold">Địa chỉ:</td>
+                        <td>@Html.DisplayFor(model => model.Address)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profile-picture {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border: 5px solid #fff;
+    }
+
+    .card-title {
+        color: #333;
+    }
+
+    .btn-group .btn {
+        min-width: 120px;
+    }
+</style>

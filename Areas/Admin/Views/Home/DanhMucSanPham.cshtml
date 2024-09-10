@@ -1,0 +1,188 @@
+﻿@model PagedList.IPagedList<dotMVC.Data.hanghoa>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "DanhMucSanPham";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="text-center">
+    <h2>Danh Mục Các Sản Phẩm</h2>
+
+    <p>
+        @Html.ActionLink("Tạo mới", "Add", null, new { @class = "btn btn-primary" })
+    </p>
+    <div class="row">
+        <div class="col-md-4">
+            <form method="get" action="@Url.Action("DanhMucSanPham")">
+                <div class="input-group mb-3">
+                    <input type="text" name="searchTerm" class="form-control" placeholder="Tìm kiếm theo tên..." value="@ViewBag.CurrentFilter" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Tìm kiếm</button>
+                    </div>
+                    <br />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr class="table-header">
+            <th>Tên Loại</th>
+            <th>Tên hàng hóa</th>
+            <th>Đặc biệt</th>
+            <th>Lượt xem</th>
+            <th>Ngày Lập</th>
+            <th>Mô tả</th>
+            <th>Hiển thị</th>
+            <th>Tùy chọn</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 0;
+            string cls = "";
+        }
+        @foreach (var item in Model)
+        {
+            i++;
+            cls = i % 2 == 0 ? "table-row-even" : "table-row-odd";
+            <tr class="@cls">
+                <td class="text-center">@Html.DisplayFor(modelItem => item.loai.tenloai)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.tenhh)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.dacbiet)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.soluotxem)</td>
+                <td class="text-center">@Html.DisplayFor(modelItem => item.ngaylap)</td>
+                <td class="text-center">@Html.Raw(item.mota)</td>
+                <td class="text-center">
+                    @if (item.an == 0)
+                    {
+                        @:Hiện
+                    }
+                    else
+                    {
+                        @:Ẩn
+                    }
+                </td>
+                <td class="text-center">
+                    @if (item.an == 0)
+                    {
+                        @Html.ActionLink("Sửa", "Edit", new { id = item.mahh }, new { @class = "btn btn-primary btn-sm m-2" })
+                        @Html.ActionLink("Xóa", "DeleteHangHoaAction", new { id = item.mahh }, new { @class = "btn btn-danger btn-sm" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("Sửa", "Edit", new { id = item.mahh }, new { @class = "btn btn-primary btn-sm m-2" })
+                        @Html.ActionLink("Hiện", "UpHangHoaAction", new { id = item.mahh }, new { @class = "btn btn-danger btn-sm" })
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="pagination-container">
+    <span class="page-info">Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount</span>
+    <ul class="pagination justify-content-center">
+        @Html.PagedListPager(Model, page => Url.Action("DanhMucSanPham", new { page, searchTerm = ViewBag.CurrentFilter }), new PagedListRenderOptions { Display = PagedListDisplayMode.IfNeeded })
+    </ul>
+</div>
+
+<style>
+    .table-header {
+        background-color: black;
+        color: white;
+        text-align: center;
+    }
+
+    .table-row-even {
+        background-color: #d3d3d3; /* Light gray */
+        color: black;
+    }
+
+    .table-row-odd {
+        background-color: #f0f0f0; /* Slightly lighter gray */
+        color: black;
+    }
+
+    .table .text-center {
+        vertical-align: middle;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        color: #fff;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+
+    .pagination-container {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    .page-info {
+        margin-right: 10px;
+        font-weight: bold;
+    }
+
+    .pagination {
+        margin: 0;
+    }
+
+        .pagination > li {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+            .pagination > li > a,
+            .pagination > li > span {
+                padding: 6px 12px;
+                border: 1px solid #ddd;
+                background-color: #f5f5f5;
+                color: #333;
+                text-decoration: none;
+                transition: background-color 0.2s ease, color 0.2s ease;
+            }
+
+                .pagination > li > a:hover {
+                    background-color: #ddd;
+                }
+
+        .pagination > .active > a,
+        .pagination > .active > span {
+            background-color: #337ab7;
+            border-color: #337ab7;
+            color: #fff;
+        }
+
+        .pagination > .disabled > span,
+        .pagination > .disabled > a,
+        .pagination > .disabled > a:hover {
+            background-color: #fff;
+            border-color: #ddd;
+            color: #999;
+            cursor: not-allowed;
+        }
+</style>

@@ -1,0 +1,113 @@
+﻿@model IEnumerable<dotMVC.Data.hanghoa>
+<div class="container">
+
+
+<h1 class="text-center mt-4">Số sản phẩm phù hợp: <strong>@Model.Count()</strong></h1>
+<a href="@Url.Action("index", "product")" class="btn btn-secondary text-center mb-3 ms-2">Quay lại Shop</a>
+<div class="container">
+    <div class="row">
+        @foreach (var i in Model)
+        {
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                @{
+                    Html.RenderAction("itemProduct", "Product", new { hh = i });
+                }
+            </div>
+        }
+    </div>
+</div>
+</div>
+
+
+<style>
+    .pagination-container {
+        margin-top: 20px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        padding-left: 0;
+        list-style: none;
+        border-radius: 0.25rem;
+    }
+
+    .page-item {
+        margin: 0 5px;
+    }
+
+        .page-item .page-link {
+            position: relative;
+            display: block;
+            padding: 0.75rem 1.25rem;
+            margin-left: -1px;
+            line-height: 1.25;
+            color: #007bff;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            text-decoration: none;
+        }
+
+            .page-item .page-link:hover {
+                z-index: 2;
+                color: #0056b3;
+                background-color: #e9ecef;
+                border-color: #dee2e6;
+            }
+
+        .page-item.active .page-link {
+            z-index: 1;
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
+
+    .product-wap {
+        transition: transform 0.2s;
+    }
+
+        .product-wap:hover {
+            transform: scale(1.05);
+        }
+
+    .card-title {
+        font-size: 1.1em;
+        font-weight: bold;
+        height: 3em; /* Set a height to prevent it from expanding */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Number of lines to show */
+        -webkit-box-orient: vertical;
+    }
+
+    .card-text {
+        font-size: 0.9em;
+        color: #6c757d;
+    }
+
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+    .text-danger {
+        color: #dc3545;
+    }
+</style>

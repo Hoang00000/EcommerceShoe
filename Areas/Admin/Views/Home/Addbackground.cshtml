@@ -1,0 +1,92 @@
+﻿@model dotMVC.Data.background
+
+@{
+    ViewBag.Title = "Addbackground";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2 class="text-center">Thêm mới Background</h2>
+    <form id="addBackgroundForm" method="POST">
+        <div class="form-group">
+            <label for="ten">Tên background:</label>
+            <input type="text" class="form-control" name="ten" id="ten" required />
+        </div>
+        <div class="form-group">
+            <label for="tieude">Tiêu đề:</label>
+            <input type="text" class="form-control" name="tieude" id="tieude" required />
+        </div>
+        <div class="form-group">
+            <label for="url">Hình ảnh:</label>
+            <div class="input-group">
+                <input type="text" class="form-control" name="url" id="url" required readonly />
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-primary" onclick="BrowseServer()">Chọn ảnh</button>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success" id="submitBtn">Thêm</button>
+    </form>
+
+    <div class="mt-3 text-center">
+        <a href="@Url.Action("Background")" class="btn btn-secondary">Back to List</a>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="~/Areas/Admin/Content/ckfinder/ckfinder.js"></script>
+    <script>
+        function BrowseServer() {
+            var finder = new CKFinder();
+            finder.selectActionFunction = SetFileField;
+            finder.popup();
+        }
+
+        function SetFileField(fileUrl) {
+            var fileName = fileUrl.split('/').pop();
+            document.getElementById('url').value = fileName;
+            $(`input[name=url]`).val(fileName);
+        }
+
+        $(document).ready(function() {
+            $('#addBackgroundForm').on('submit', function(e) {
+                e.preventDefault(); // Ngăn chặn hành vi mặc định của biểu mẫu
+
+                console.log($(this).serialize()); // Log dữ liệu gửi đi để kiểm tra
+
+                $.ajax({
+                    url: '@Url.Action("AddbackgroundAction")',
+                    type: 'POST',
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        if (response.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Thành công',
+                                text: 'Thêm background thành công!',
+                            }).then(function() {
+                                // Chuyển hướng sau khi thông báo thành công
+                                window.location.href = '@Url.Action("Background")';
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Lỗi',
+                                text: response.message || 'Thêm mới thất bại. Vui lòng thử lại.',
+                            });
+                        }
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi',
+                            text: 'Đã xảy ra lỗi. Vui lòng thử lại.',
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

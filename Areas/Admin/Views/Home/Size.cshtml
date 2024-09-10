@@ -1,0 +1,76 @@
+﻿@model IEnumerable<dotMVC.Data.sizegiay>
+
+@{
+    ViewBag.Title = "Size";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <h2 class="text-center">Danh sách kích thước</h2>
+
+    <p>
+        @Html.ActionLink("Thêm kích thước ", "ThemSize", null, new { @class = "btn btn-success" })
+    </p>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead style="background-color: black; color: white;">
+                <tr>
+                    <th class="text-center">Kích thước</th>
+                    <th class="text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.size)</td>
+                        <td class="text-center">
+                            @Html.ActionLink("Sửa", "EditSize", new { id = item.Idsize }, new { @class = "btn btn-primary btn-sm" })
+                            <a href="@Url.Action("XoaSize", new { id = item.Idsize })" class="btn btn-danger btn-sm ml-1 deleteBtn">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('.deleteBtn').click(function (event) {
+                event.preventDefault();
+
+                var deleteUrl = $(this).attr('href');
+
+                Swal.fire({
+                    title: 'Bạn chắc chắn muốn xóa?',
+                    text: 'Kích thước này sẽ bị xóa vĩnh viễn!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Xóa',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = deleteUrl;
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style>
+        .btn {
+            transition: all 0.3s ease;
+        }
+
+            .btn:hover {
+                transform: scale(1.1); /* Example of hover effect */
+            }
+    </style>
+}

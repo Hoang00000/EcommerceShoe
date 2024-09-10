@@ -1,0 +1,36 @@
+﻿
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    //var Tinhtrang = ((List<dotMVC.Data.tinhtrang>)ViewData["Tinhtrang"]).ToList();
+    var TinhTrang = ((List<dotMVC.Data.tinhtrang>)ViewData["TinhTrang"]).ToList();
+}
+@model IEnumerable<dotMVC.Data.hoadon>
+
+<h2>Sửa trạng thái</h2>
+
+
+<h2 class="text-center">Chỉnh sửa sản phẩm</h2>
+
+@foreach (var product in Model)
+{
+    <form action="@Url.Action("EditAction")" method="GET" class="mt-4">
+        <input type="hidden" name="masohd" value="@product.masohd" />
+
+        <div class="form-group">
+            <label for="matt">Loại sản phẩm:</label>
+            <select name="matt" id="matt" class="form-control">
+                @foreach (var tinhtrang in TinhTrang)
+                {
+                    <option value="@tinhtrang.matt" @(tinhtrang.matt == product.matt ? "selected" : "")>@tinhtrang.tentt</option>
+                }
+            </select>
+        </div>
+
+
+
+        <button type="submit" class="btn btn-primary">Edit</button>
+    </form>
+
+}

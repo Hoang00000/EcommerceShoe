@@ -1,0 +1,52 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    background-color: #f7f9fc;
+}
+
+.form-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+    .form-container > * {
+        flex: 0 0 calc(50% - 10px); /* 10px là khoảng cách giữa các cột */
+        margin-right: 20px; /* Khoảng cách giữa các cột */
+    }
+
+    .form-container label {
+        flex: 1;
+    }
+@media (max-width: 768px) {
+    .sidebar {
+        width: 85px; /* Độ rộng khi màn hình hẹp */
+    }
+
+        .sidebar:hover {
+            width: 200px; /* Sidebar mở rộng ít hơn trên màn hình nhỏ */
+        }
+
+        .sidebar .sidebar-header h2 {
+            font-size: 1rem;
+        }
+
+    .sidebar-links li a {
+        gap: 0 10px;
+        font-size: 0.875rem;
+    }
+
+    .sidebar-links h4 {
+        margin: 15px 0;
+    }
+
+    .user-profile img {
+        width: 36px;
+    }
+
+    .user-profile span {
+        font-size: 0.7rem;
+    }
+}
+
+
+
+  

@@ -1,0 +1,374 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Loai = (List<dotMVC.Data.loai>)ViewData["Loai"];
+
+}
+@model List<dotMVC.Data.hanghoa>
+
+<style>
+    .pagination {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        border: none;
+    }
+
+        .pagination li { /* Style individual list items */
+            margin: 5px; /* Add some spacing between items -->
+      padding: 5px 10px;  border: 1px solid #ddd;  border-radius: 4px;  cursor: pointer;  }
+
+    .pagination li a {  /* Style links within list items */
+            text-decoration: none;
+            color: #333;
+        }
+
+            .pagination li.active { /* Style the active page item */
+                background-color: #ddd;
+            }
+
+            .pagination li:hover:not(.active) { /* Hover effect for non-active items */
+                background-color: #eee;
+            }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        list-style-type: none;
+        padding: 0;
+    }
+
+        .pagination a, .pagination span {
+            margin: 0 5px;
+            padding: 10px 15px;
+            text-decoration: none;
+            color: #007bff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+            .pagination a:hover {
+                background-color: #007bff;
+                color: #fff;
+            }
+
+        .pagination .active {
+            background-color: #007bff;
+            color: #fff;
+            border: 1px solid #007bff;
+        }
+
+        .pagination .dots {
+            border: none;
+            color: #777;
+        }
+
+        .pagination .prev, .pagination .next {
+            font-weight: bold;
+        }
+
+    input[type="radio"] {
+        display: none; /* Ẩn input radio mặc định */
+    }
+
+        /* Style label như các ô màu */
+        input[type="radio"] + label {
+            display: inline-block;
+            width: 40px; /* Đặt kích thước cho ô màu */
+            height: 40px;
+            border: 1px solid #000;
+            margin-right: 10px;
+        }
+
+    /* Thay đổi màu nền của label tương ứng với giá trị value */
+    #black + label {
+        background-color: #000;
+    }
+
+    #red + label {
+        background-color: #ff0000;
+    }
+
+    #blue + label {
+        background-color: #0000ff;
+    }
+
+    #brown + label {
+        background-color: #a52a2a;
+    }
+
+    #yellow + label {
+        background-color: #ffff00;
+    }
+
+    #purple + label {
+        background-color: #800080;
+    }
+
+    .price-range {
+        width: 300px; /* Đặt độ rộng của thanh tăng giá */
+    }
+
+    input[type="range"] {
+        -webkit-appearance: none;
+        -moz-apperance: none;
+        appearance: none;
+        outline: none;
+        border: none;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+        /* Track */
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 10px; /* Chiều cao của thanh */
+            background: linear-gradient(to right, #ff0000, #ffff00, #0000ff); /* Màu nền của thanh */
+            border-radius: 5px; /* Độ cong của mép thanh */
+            cursor: pointer;
+        }
+
+        /* Thumb (điểm trượt) */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px; /* Chiều rộng của điểm trượt */
+            height: 20px; /* Chiều cao của điểm trượt */
+            background: #fff; /* Màu của điểm trượt */
+            border-radius: 50%; /* Chuyển điểm trượt thành hình tròn */
+            border: 2px solid #000; /* Viền của điểm trượt */
+            cursor: pointer;
+            margin-top: -5px; /* Điều chỉnh vị trí của điểm trượt */
+        }
+</style>
+<script>
+    $(document).ready(function () {
+        $(".templatemo-accordion .d-flex").click(function (e) {
+            e.preventDefault(); // Ngăn chặn hành động mặc định của thẻ <a>
+            $(this).next("ul").slideToggle(); // Hiện hoặc ẩn danh sách con
+            $(this).find("i").toggleClass("fa-chevron-circle-down fa-chevron-circle-up"); // Đổi biểu tượng mũi tên
+        });
+    });
+</script>
+<!-- Start Content -->
+
+
+<div class="container py-5">
+
+
+
+    <div class="row container">
+
+
+        <div class="col-lg-3 col-md-12">
+            <div class="">
+                <h1 class="h2 pb-4">Categories</h1>
+                <ul class="list-unstyled templatemo-accordion">
+                    <li class="pb-3">
+                        <a class="d-flex justify-content-between h3 text-decoration-none" href="#">
+                            Shoes
+                            <i class="fa fa-fw fa-chevron-circle-down mt-1"></i>
+                        </a>
+                        <ul class="list-unstyled pl-3">
+                            @foreach (var i in Loai)
+                            {
+                                <li><a class="text-decoration-none" href="@Url.Action("categories", "product", new { loai = i.maloai })">@i.tenloai</a></li>
+                            }
+
+                        </ul>
+                    </li>
+                </ul>
+                <hr />
+            </div>
+            <div class="price">
+                <h1 class="h2 pb-4">Giá Tiền</h1>
+                <form id="price-filter-form" action="/product/Index" method="get">
+                    <ul>
+                        <li>
+                            <input type="checkbox" id="checkbox-duoi-150000" name="prices" value="duoi-150000" onchange="this.form.submit()">
+                            <label for="checkbox-duoi-150000">Dưới 150.000đ</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="checkbox-200000-300000" name="prices" value="200000-300000" onchange="this.form.submit()">
+                            <label for="checkbox-200000-300000">Từ 200.000đ - 300.000đ</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="checkbox-300000-450000" name="prices" value="300000-450000" onchange="this.form.submit()">
+                            <label for="checkbox-300000-450000">Từ 300.000đ - 450.000đ</label>
+                        </li>
+                        <li>
+                            <input type="checkbox" id="checkbox-tren-450000" name="prices" value="tren-450000" onchange="this.form.submit()">
+                            <label for="checkbox-tren-450000">Trên 450.000đ</label>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+
+            <div class="">
+                <h1 class="h2 pb-4">Size</h1>
+                <img src="~/Assets/img/about/sizechart.jpg" style="width:300px;height:300px " class="img-text-center" />
+                <hr />
+            </div>
+
+
+
+
+
+        </div>
+
+
+
+
+
+
+        <div class="col-lg-9 col-md-12 ">
+            <div class="row">
+                @*<div class="col-md-6">
+                    <ul class="list-inline shop-top-menu pb-3 pt-1">
+                        <li class="list-inline-item">
+                            <a class="h3 text-dark text-decoration-none mr-3" href="#">All</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="h3 text-dark text-decoration-none mr-3" href="#">Men's</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a class="h3 text-dark text-decoration-none" href="#">Women's</a>
+                        </li>
+                    </ul>
+                </div>*@
+                @*<div class="col-md-6 pb-4">
+                    <div class="d-flex">
+                        <select class="form-control">
+                            <option>Giá từ cao đến thấp</option>
+                            <option>Giá từ thấp đến cao</option>
+                        </select>
+                    </div>
+                </div>*@
+            </div>
+
+            <div class="row">
+
+                @foreach (var i in Model)
+                {
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                        @{
+                            Html.RenderAction("itemProduct", "Product", new { hh = i });
+                        }
+                    </div>
+                }
+            </div>
+            <br />
+            <br />
+
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+<!-- End Content -->
+<!-- Start Brands -->
+<section class="bg-light py-5">
+    <div class="container my-4">
+        <div class="row text-center py-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1">Our Brands</h1>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    Lorem ipsum dolor sit amet.
+                </p>
+            </div>
+            <div class="col-lg-9 m-auto tempaltemo-carousel">
+                <div class="row d-flex flex-row">
+                    <!--Controls-->
+                    <div class="col-1 align-self-center">
+                        <a class="h1" href="#multi-item-example" role="button" data-bs-slide="prev">
+                            <i class="text-light fas fa-chevron-left"></i>
+                        </a>
+                    </div>
+                    <!--End Controls-->
+                    <!--Carousel Wrapper-->
+                    <div class="col">
+                        <div class="carousel slide carousel-multi-item pt-2 pt-md-0" id="multi-item-example" data-bs-ride="carousel">
+                            <!--Slides-->
+                            <div class="carousel-inner product-links-wap" role="listbox">
+
+                                <!--First slide-->
+                                <div class="carousel-item active">
+                                    <div class="row">
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/assets/img/brand_01.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/assets/img/brand_02.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/assets/img/brand_03.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/assets/img/brand_04.png" alt="Brand Logo"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End First slide-->
+                                <!--Second slide-->
+                                <div class="carousel-item">
+                                    <div class="row">
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/assets/img/brand_01.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/assets/img/brand_02.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/assets/img/brand_03.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/assets/img/brand_04.png" alt="Brand Logo"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End Second slide-->
+                                <!--Third slide-->
+                                <div class="carousel-item">
+                                    <div class="row">
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/assets/img/brand_01.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/assets/img/brand_02.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/assets/img/brand_03.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/assets/img/brand_04.png" alt="Brand Logo"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End Third slide-->
+
+                            </div>
+                            <!--End Slides-->
+                        </div>
+                    </div>
+                    <!--End Carousel Wrapper-->
+                    <!--Controls-->
+                    <div class="col-1 align-self-center">
+                        <a class="h1" href="#multi-item-example" role="button" data-bs-slide="next">
+                            <i class="text-light fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                    <!--End Controls-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--End Brands-->

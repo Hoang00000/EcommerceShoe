@@ -1,0 +1,62 @@
+﻿@model dotMVC.Data.mausac
+
+@{
+    ViewBag.Title = "ThemSize";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <h2 class="text-center">Thêm kích thước mới</h2>
+
+    <form id="addSizeForm" action="@Url.Action("ThemSizeAction")" method="GET" class="form">
+        <div class="form-group">
+            <label for="size">Kích thước:</label>
+            <input type="text" name="size" id="size" class="form-control" required />
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn btn-primary">Thêm</button>
+    </form>
+
+    <div class="text-center">
+        @Html.ActionLink("Quay lại", "Size", null, new { @class = "btn btn-secondary" })
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#addSizeForm').submit(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+                var form = $(this);
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        // Hiển thị thông báo SweetAlert khi thêm kích thước thành công
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thêm kích thước thành công!',
+                            text: 'Nhấn OK để đóng thông báo',
+                            showConfirmButton: true, // Hiển thị nút "OK"
+                            confirmButtonText: 'OK' // Đặt nhãn cho nút "OK"
+                        }).then(function () {
+                            // Không cần làm gì sau khi nhấn OK
+                        });
+                    },
+                    error: function () {
+                        // Xử lý lỗi nếu có
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Đã xảy ra lỗi!',
+                            text: 'Đã có lỗi xảy ra trong quá trình thêm kích thước.',
+                            showConfirmButton: true, // Hiển thị nút "OK"
+                            confirmButtonText: 'OK' // Đặt nhãn cho nút "OK"
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

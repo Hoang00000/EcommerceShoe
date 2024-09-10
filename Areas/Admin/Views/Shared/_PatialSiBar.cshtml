@@ -1,0 +1,282 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sidebar Menu HTML and CSS | CodingNepal</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="~/Assets/img/about/LogoShop.png" alt="logo" />
+            <h2>SHOESPECTRO</h2>
+        </div>
+        <ul class="sidebar-links">
+            <h4>
+                <span>Main Menu</span>
+                <div class="menu-separator"></div>
+            </h4>
+            <li>
+                <a href="#" class="menu-toggle">
+                    <span class="material-symbols-outlined"></span> Quản Lý Sản Phẩm <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">@Html.ActionLink("Sản phẩm", "DanhMucSanPham", "Home", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Chi tiết sản phẩm", "ChiTietSanPham", "Home", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Danh sách màu", "Mau", "Home", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Danh sách size", "Size", "Home", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="menu-toggle">
+                    <span class="material-symbols-outlined"></span>Quản Lý Đơn Hàng <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">@Html.ActionLink("Hóa đơn", "HoaDon", "DonHang", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                </ul>
+            </li>
+            @*<li>
+                <a href="#" class="menu-toggle">
+                    <span class="material-symbols-outlined"></span>Quản Lý Đánh giá <i class="right fas fa-angle-left"></i>
+                </a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">@Html.ActionLink("Bình luận", "index", "Binhluan", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                </ul>
+            </li>*@
+            <li>
+                <a href="#" class="menu-toggle"><span class="material-symbols-outlined"></span>Thống Kê <i class="right fas fa-angle-left"></i></a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">@Html.ActionLink("Đơn hàng", "DonHang", "ThongKe", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                </ul>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">@Html.ActionLink("Số lượng sản phẩm", "ThongKeLoaiGiay", "ThongKe", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                </ul>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        @Html.ActionLink("Số lượt xem sản phẩm", "SoLuotXem", "ThongKe", new { area = "Admin" }, new { @class = "nav-link" })
+                    </li>
+                </ul>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        @Html.ActionLink("Khách hàng", "Index", "TkKhachHang", new { area = "Admin" }, new { @class = "nav-link" })
+                    </li>
+
+                </ul>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        @Html.ActionLink(" Sản phẩm", "TKHangHoa", "TkKhachHang", new { area = "Admin" }, new { @class = "nav-link" })
+                    </li>
+
+                </ul>
+
+            <li><a href="/Admin/Account/Account"><span class="material-symbols-outlined"></span>Khách Hàng</a></li>
+            <h4><span>General</span><div class="menu-separator"></div></h4>
+
+            <li>
+                <a href="#" class="menu-toggle"><span class="material-symbols-outlined"></span>Tin Tức  <i class="right fas fa-angle-left"></i></a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">@Html.ActionLink("Danh sách tin tức", "About", "Home", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="menu-toggle"><span class="material-symbols-outlined"></span>Quảng Cáo <i class="right fas fa-angle-left"></i></a>
+                <ul class="nav nav-treeview">
+                    <li class="nav-item">@Html.ActionLink("Background", "Background", "Home", new { area = "Admin" }, new { @class = "nav-link" })</li>
+                </ul>
+            </li>
+            @*<li><a href="#"><span class="material-symbols-outlined"></span>All Reports</a></li>
+            <li><a href="#"><span class="material-symbols-outlined"></span>Notifications</a></li>
+            <h4><span>Account</span><div class="menu-separator"></div></h4>
+            <li><a href="#"><span class="material-symbols-outlined"></span>Profile</a></li>
+            <li><a href="#"><span class="material-symbols-outlined"></span>Settings</a></li>
+            <li><a href="#"><span class="material-symbols-outlined"></span>Logout</a></li>*@
+        </ul>
+        <div class="user-account">
+            <div class="user-profile">
+                <img src="~/Content/Clients/dist/img/user2-160x160.jpg" alt="Profile Image" />
+                <div class="user-detail">
+                    <h3></h3>
+                    <span>@User.Identity.Name</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+    <script>
+        document.querySelectorAll('.menu-toggle').forEach(item => {
+            item.addEventListener('click', event => {
+                const parentLi = event.currentTarget.parentElement;
+                parentLi.classList.toggle('active');
+            });
+        });
+    </script>
+    <style>
+        /* Importing Google font - Poppins */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #F0F4FF;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 85px;
+            display: flex;
+            overflow-x: hidden;
+            flex-direction: column;
+            background: #161a2d;
+            padding: 25px 20px;
+            transition: all 0.4s ease;
+        }
+
+            .sidebar:hover {
+                width: 260px;
+            }
+
+        .sidebar .sidebar-header {
+            display: flex;
+            align-items: center;
+        }
+
+                .sidebar .sidebar-header img {
+                    width: 42px;
+                    border-radius: 50%;
+                }
+
+                .sidebar .sidebar-header h2 {
+                    color: #fff;
+                    font-size: 1.25rem;
+                    font-weight: 600;
+                    white-space: nowrap;
+                    margin-left: 23px;
+                }
+
+        .sidebar-links h4 {
+            color: #fff;
+            font-weight: 500;
+            white-space: nowrap;
+            margin: 10px 0;
+            position: relative;
+        }
+
+            .sidebar-links h4 span {
+                opacity: 0;
+            }
+
+        .sidebar:hover .sidebar-links h4 span {
+            opacity: 1;
+        }
+
+        .sidebar-links .menu-separator {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            transform: scaleX(1);
+            transform: translateY(-50%);
+            background: #4f52ba;
+            transform-origin: right;
+            transition-delay: 0.2s;
+        }
+
+        .sidebar:hover .sidebar-links .menu-separator {
+            transition-delay: 0s;
+            transform: scaleX(0);
+        }
+
+        .sidebar-links {
+            list-style: none;
+            margin-top: 20px;
+            height: 80%;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
+
+            .sidebar-links::-webkit-scrollbar {
+                display: none;
+            }
+
+            .sidebar-links li a {
+                display: flex;
+                align-items: center;
+                gap: 0 20px;
+                color: #fff;
+                font-weight: 500;
+                white-space: nowrap;
+                padding: 15px 10px;
+                text-decoration: none;
+                transition: 0.2s ease;
+            }
+
+                .sidebar-links li a:hover {
+                    color: #161a2d;
+                    background: #fff;
+                    border-radius: 4px;
+                }
+
+        .nav-treeview {
+            display: none;
+            list-style: none;
+            padding-left: 20px;
+        }
+
+            .nav-treeview .nav-item {
+                padding: 5px 0;
+            }
+
+        .sidebar-links .active .nav-treeview {
+            display: block;
+        }
+
+        .user-account {
+            margin-top: auto;
+            padding: 12px 10px;
+            margin-left: -10px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            color: #161a2d;
+        }
+
+            .user-profile img {
+                width: 42px;
+                border-radius: 50%;
+                border: 2px solid #fff;
+            }
+
+            .user-profile h3 {
+                font-size: 1rem;
+                font-weight: 600;
+            }
+
+            .user-profile span {
+                font-size: 0.775rem;
+                font-weight: 600;
+            }
+
+        .user-detail {
+            margin-left: 23px;
+            white-space: nowrap;
+        }
+
+        .sidebar:hover .user-account {
+            background: #fff;
+            border-radius: 4px;
+        }
+
+    </style>
+</body>
+</html>

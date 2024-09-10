@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewBag.Title = "ItemProduct";
+}
+
+@model dotMVC.Data.cthanghoa
+@{
+
+    var CTHangHoa = (List<dotMVC.Data.cthanghoa>)ViewData["CTHangHoa"];
+}
+<div class="col-lg-4 mb-5">
+    <div class="card product-wap rounded-0">
+        <div class="card rounded-0">
+            <img class="rounded-0 img-fluid" src="~/assets/img/@Model.hinh">
+            <div class="card-img-overlay rounded-0 product-overlay d-flex align-items-center justify-content-center">
+                <ul class="list-unstyled text-center">
+                    <li><a class="btn btn-success text-white" href="@Url.Action("Details", "Product", new { id = Model.idhanghoa })"><i class="far fa-eye"></i></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="card-body">
+            <a href="@Url.Action("Details", "Product", new { id = Model.idhanghoa })" class="h3 text-decoration-none d-block text-center">@ViewData["tenhh"]</a>
+            <div class="row">
+                <p class="col-6">@ViewData["size"] Size</p>
+                <p class="col-4 text-end">@ViewData["color"] Màu</p>
+            </div>
+
+            <ul class="list-unstyled d-flex justify-content-center mb-2">
+                <li>
+                    <i class="text-warning fa fa-star"></i>
+                    <i class="text-warning fa fa-star"></i>
+                    <i class="text-warning fa fa-star"></i>
+                    <i class="text-muted fa fa-star"></i>
+                    <i class="text-muted fa fa-star"></i>
+                </li>
+            </ul>
+            <div class="text-center">
+                <div id="price-info">
+                    @if (Convert.ToInt32(ViewData["ProductDiscount"]) == 0)
+                    {
+                        <p class="text-center h4">
+                            @String.Format("{0:N0}", ViewData["ProductPrice"]) ₫
+                        </p>
+                    }
+                    else
+                    {
+                        <p class="text-center">
+                            <span id="original-price" class="h4 text-decoration-line-through">@String.Format("{0:N0}", ViewData["ProductPrice"]) ₫</span>
+                            <span id="discounted-price" class="h4">@String.Format("{0:N0}", ViewData["ProductDiscount"]) ₫</span>
+                        </p>
+                        <p id="discount-info" class="text-danger"></p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    /* Ensure the card is responsive */
+    .card.product-wap {
+        width: 100%;
+        max-width: 350px; /* You can adjust this value */
+        margin: 0 auto;
+    }
+
+    /* Ensure the image doesn't break */
+    .card img {
+        object-fit: cover;
+        height: 220px; /* Fixed height to maintain consistency */
+    }
+
+    /* Adjust button sizes and spacing */
+    .card .btn {
+        padding: 5px 30px;
+        font-size: 14px;
+    }
+
+    /* Adjust the font size for product name and price */
+    .card .card-body .h3 {
+        font-size: 1.25rem;
+    }
+
+    .card .card-body .h4 {
+        font-size: 1.125rem;
+    }
+
+    /* Ensure color dots are evenly spaced */
+    .product-color-dot {
+        width: 15px;
+        height: 15px;
+        display: inline-block;
+    }
+
+    /* Ensure proper padding and margins for elements */
+    .card-body p, .card-body ul {
+        margin-bottom: 10px;
+    }
+
+    /* Ensure the card is properly aligned and centered */
+    .card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    /* Adjust star rating size */
+    .card-body i.fa-star {
+        font-size: 14px;
+    }
+
+    /* Ensure the card adjusts well on different screen sizes */
+
+    }
+</style>
+
+
+<script>window.onload = function () {
+        var originalPrice = parseFloat(document.getElementById("original-price").innerText.replace(/[^0-9.-]+/g, ""));
+        var discountedPrice = parseFloat(document.getElementById("discounted-price").innerText.replace(/[^0-9.-]+/g, ""));
+        var discountPercentage = Math.round((originalPrice - discountedPrice) / originalPrice * 100);
+        var savings = Math.round(originalPrice - discountedPrice);
+
+        document.getElementById("discount-info").innerText = `You save ${savings.toLocaleString()} ₫ (${discountPercentage}% off)`;
+    }</script>

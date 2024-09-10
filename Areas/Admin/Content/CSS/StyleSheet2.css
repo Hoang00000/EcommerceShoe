@@ -1,0 +1,35 @@
+﻿/* Định dạng cho bảng */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    /* Định dạng cho tiêu đề của bảng */
+    .table th {
+        background-color: #f2f2f2;
+        color: #333;
+        font-weight: bold;
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    /* Định dạng cho các hàng chẵn của bảng */
+    .table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    /* Định dạng cho các hàng lẻ của bảng */
+    .table tr:nth-child(odd) {
+        background-color: #ffffff;
+    }
+
+    /* Định dạng cho cột tùy chọn */
+    .table td:last-child {
+        text-align: center;
+    }
+
+    /* Định dạng khi di chuột vào hàng */
+    .table tr:hover {
+        background-color: #ddd;
+    }

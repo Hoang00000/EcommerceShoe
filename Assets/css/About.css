@@ -1,0 +1,52 @@
+﻿/* Rounded corners and shadow for cards */
+.card {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+    border: none; /* Xóa viền */
+}
+
+    .card:hover {
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+    }
+
+/* Button styling */
+.btn-link {
+    color: #007bff; /* Bootstrap primary color */
+    text-decoration: none;
+    font-weight: bold;
+}
+
+    .btn-link:hover {
+        text-decoration: underline;
+    }
+
+/* Title and Text Styling */
+.card-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.card-text {
+    color: #666;
+    line-height: 1.6;
+}
+
+/* Collapse Styling */
+.collapse {
+    margin-top: 10px;
+}
+
+    /* Button inside Collapse */
+    .collapse .btn-link {
+        font-weight: normal;
+    }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .card-title {
+        font-size: 1.3rem;
+    }
+}

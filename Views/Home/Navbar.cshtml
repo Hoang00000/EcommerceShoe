@@ -1,0 +1,218 @@
+﻿@{
+    ViewBag.Title = "Navbar";
+    var gh = Session["Giohang"] as List<dotMVC.Models.GioHang>;
+    var yeuThich = Session["YeuThich"] as List<dotMVC.Models.YeuThich>;
+}
+<!-- Start Top Nav -->
+<style>
+    .account_section {
+        display: none;
+        position: absolute;
+        background-color: #fff; /* Set background color */
+        padding: 10px;
+        border: 1px solid #ccc; /* Add border */
+        z-index: 1;
+    }
+
+    .nav-item.account:hover .account_section {
+        display: block;
+    }
+
+    ul li {
+        list-style: none;
+    }
+
+    #templatemo_nav_top {
+        background-color: #f0f0f0; /* Màu xám nhạt */
+        color: #000; /* Màu chữ đen */
+    }
+
+        #templatemo_nav_top .navbar-sm-brand {
+            color: #000; /* Màu chữ đen */
+        }
+
+            #templatemo_nav_top .navbar-sm-brand:hover {
+                color: #333; /* Màu chữ đen đậm khi hover */
+            }
+
+        #templatemo_nav_top i {
+            color: #000; /* Màu icon đen */
+        }
+
+            #templatemo_nav_top i.icon-color {
+                color: #63E6BE; /* Màu riêng cho icon "earth-americas" */
+            }
+
+    .bold-text {
+        font-weight: bold;
+    }
+</style>
+
+<!--<nav class="navbar navbar-expand-lg navbar d-none d-lg-block" id="templatemo_nav_top">
+    <div class="container text-dark text-center">
+        <div class="w-100 d-flex justify-content-between">
+            <div>
+                <i class="fa-solid fa-earth-americas icon-color"></i>
+                <a class="navbar-sm-brand text-dark h3 text-decoration-none" href="">VIET NAM</a>
+            </div>
+            <div>
+                <H class="navbar-sm-brand text-dark text-decoration-none bold-text" href="">Free Shipping !</H>
+                <a class="navbar-sm-brand text-dark text-decoration-none" href="">On All Orders</a>
+            </div>
+            <div>
+                <i class="fa fa-envelope mx-2"></i>
+                <a class="navbar-sm-brand text-dark text-decoration-none" href="mailto:info@company.com">info@company.com</a>
+                <i class="fa fa-phone mx-2"></i>
+                <a class="navbar-sm-brand text-dark text-decoration-none" href="tel:010-020-0340">010-020-0340</a>
+            </div>
+        </div>
+    </div>
+</nav>
+-->
+<!-- Close Top Nav -->
+<!-- Header -->
+<nav class="navbar navbar-expand-lg navbar-light shadow">
+    <div class="container d-flex justify-content-between align-items-center">
+
+        <a class="nav-link" href="@Url.Action("index","home")">
+            <img src="~/Assets/img/about/LogoShop.png" style="width:200px;height:100px" />
+        </a>
+
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#templatemo_main_nav" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="align-self-center collapse navbar-collapse flex-fill  d-lg-flex justify-content-lg-between" id="templatemo_main_nav">
+            <div class="flex-fill">
+                <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("index","home")">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("about","home")">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("index", "product")">Shop</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="@Url.Action("contact","home")">Contact</a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="navbar align-self-center d-flex">
+                <div class="d-lg-none flex-sm-fill mt-3 mb-4 col-7 col-sm-auto pr-3">
+
+                    @*<form action="@Url.Action("Search", "Product")" method="get" class="form-inline mt-2 mt-md-0">
+                            <input class="form-control mr-sm-2" type="text" name="query" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </form>*@
+                    @*<form id="navbarSearchForm" action="/Search" method="GET" class="input-group">
+                            <input type="text" class="form-control" id="inputMobileSearch" name="query" placeholder="Search ...">
+                            <button type="submit" class="input-group-text bg-success text-light">
+                                <i class="fa fa-fw fa-search"></i>
+                            </button>
+                        </form>*@
+                </div>
+                <a class="nav-icon d-none d-lg-inline" href="#" data-bs-toggle="modal" data-bs-target="#templatemo_search">
+                    <i class="fa fa-fw fa-search text-dark mr-2"></i>
+                </a>
+                <a class="nav-icon position-relative text-decoration-none" href="@Url.Action("GioHang","Product")">
+                    <i class="fa fa-fw fa-cart-arrow-down text-dark mr-1"></i>
+                    <span id="cartItemCount" class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
+                        @((gh != null) ? gh.Count : 0)
+                    </span>
+                </a>
+
+                <a class="nav-icon position-relative text-decoration-none" href="@Url.Action("YeuThich", "Product")">
+                    <i class="far fa-heart"></i>
+                    <span id="yeuThichCount" class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
+                        @((yeuThich!= null) ? yeuThich.Count : 0)
+                    </span>
+                </a>
+
+
+
+
+                <li class="nav-item dropdown">
+                    @if (!Request.IsAuthenticated)
+                    {
+                        <a class="nav-icon position-relative text-decoration-none dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-fw fa-user text-dark mr-3"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/account/login">
+                                    <i class="fa fa-user" aria-hidden="true"></i> Đăng nhập
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/account/register">
+                                    <i class="fa fa-user-plus" aria-hidden="true"></i> Đăng ký
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <a class="nav-icon position-relative text-decoration-none dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            @if (!string.IsNullOrEmpty(ViewBag.UserImage))
+                            {
+                                <img src="@Url.Content(ViewBag.UserImage)" class="img-fluid rounded-circle" style="width: 30px; height: 30px; margin-right: 5px;" alt="User Image" />
+                            }
+                            else
+                            {
+                                <i class="fa fa-fw fa-user text-dark mr-3"></i>
+                            }
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li class="nav-item">
+                                <a class="dropdown-item" href="@Url.Action("Profile","Profile")">
+                                    <i class="fa fa-user" aria-hidden="true"></i> Thông tin cá nhân
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="dropdown-item" href="/account/logout" onclick="event.preventDefault(); document.getElementById('logOffForm').submit();">
+                                    <i class="fa fa-sign-out" aria-hidden="true"></i> Đăng xuất
+                                </a>
+                            </li>
+                        </ul>
+                    }
+                </li>
+                @if (Request.IsAuthenticated)
+                {
+                    <div style="display:none">
+                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { @id = "logOffForm" }))
+                        {
+                            @Html.AntiForgeryToken()
+                        }
+                    </div>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+</nav>
+<!-- Close Header -->
+<!-- Modal -->
+
+<div class="modal fade" id="templatemo_search" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content border-0">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="@Url.Action("Search", "Product")" method="get" class="modal-body p-3">
+                <div class="input-group mb-2">
+                    <input type="text" class="form-control" id="inputModalSearch" name="query" placeholder="Search ...">
+                    <button type="submit" class="input-group-text bg-success text-light">
+                        <i class="fa fa-fw fa-search text-white"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

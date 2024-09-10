@@ -1,0 +1,22 @@
+﻿@model dotMVC.Models.VNPayPaymentModel
+
+<form method="post" asp-action="CreatePayment">
+    <div>
+        <label for="vnp_TxnRef">Transaction Reference</label>
+        <input type="text" id="vnp_TxnRef" name="vnp_TxnRef" required />
+    </div>
+    <div>
+        <label for="vnp_Amount">Amount</label>
+        <input type="number" id="vnp_Amount" name="vnp_Amount" required />
+    </div>
+    <div>
+        <label for="vnp_OrderInfo">Order Information</label>
+        <input type="text" id="vnp_OrderInfo" name="vnp_OrderInfo" required />
+    </div>
+    <div>
+        <input type="hidden" id="vnp_IpAddr" name="vnp_IpAddr" value="@Request.UserHostAddress" />
+    </div>
+    <div>
+        <button type="submit">Pay with VNPay</button>
+    </div>
+</form>

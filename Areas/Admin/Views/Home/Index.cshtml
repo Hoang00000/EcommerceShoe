@@ -1,0 +1,255 @@
+﻿@{
+    ViewBag.Title = "Trang chủ admin";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+<header>
+    <div class="container col-md-12 mr-4 ">
+        <div class="row">
+            <div class="col-md-3 mt-4 ">
+                <div class="card text-center bg-gradient-red">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-8 text-left">
+                                <h2 class="">@ViewBag.TotalProducts</h2>
+                                <p class="fw-bold">Số lượng sản phẩm</p>
+                            </div>
+                            <div class="col-4 text-right">
+                                <i class="fa-solid fa-3x fa-shoe-prints"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a class="aaa" href="/Admin/Home/ChiTietSanPham">Chi tiết <i class="fa fa-arrow-alt-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mt-4">
+                <div class="card text-center bg-gradient-blue">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-8 text-left">
+                                <h2 class="">@ViewBag.TotalHangHoa</h2>
+                                <p class="fw-bold">Sản phẩm</p>
+                            </div>
+                            <div class="col-4 text-right">
+                                <i class="fa-solid fa-3x fa-list"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a class="aaa" href="/Admin/Home/DanhMucSanPham">Chi tiết <i class="fa fa-arrow-alt-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mt-4 ">
+                <div class="card text-center bg-gradient-green">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-8 text-left">
+                                <h2 class="">@ViewBag.TotalBackground</h2>
+                                <p class="fw-bold">Quảng cáo</p>
+                            </div>
+                            <div class="col-4 text-right">
+                                <i class="fa-solid fa-3x fa-rectangle-ad"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a class="aaa" href="/Admin/Home/Background">Chi tiết <i class="fa  fa-arrow-alt-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mt-4 ">
+                <div class="card text-center bg-gradient-orange">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-8 text-left">
+                                <h2 class="">@ViewBag.TotalAbout</h2>
+                                <p class="fw-bold">Bài viết</p>
+                            </div>
+                            <div class="col-4 text-right">
+                                <i class="fa-solid fa-3x fa-pen"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a class="aaa" href="/Admin/Home/About">Chi tiết <i class="fa  fa-arrow-alt-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="container col-md-12 mr-4">
+
+
+        <div class="row">
+            <div class="col-md-3 mt-4 mb-4">
+                <div class="card text-center bg-gradient-purple">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-8 text-left">
+                                <h2 class="">@ViewBag.totalMausac</h2>
+                                <p class="fw-bold">Màu sắc</p>
+                            </div>
+                            <div class="col-4 text-right">
+                                <i class="fa-solid fa-3x fa-palette"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a class="aaa" href="/Admin/Home/Mau">Chi tiết <i class="fa fa-arrow-alt-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mt-4 mb-4">
+                <div class="card text-center bg-gradient-fuchsia">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-8 text-left">
+                                <h2 class="">@ViewBag.totalSize</h2>
+                                <p class="fw-bold">Kích thước</p>
+                            </div>
+                            <div class="col-4 text-right">
+                                <i class="fa-solid fa-3x fa-ruler"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a class="aaa" href="/Admin/Home/Size">Chi tiết <i class="fa fa-arrow-alt-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mt-4 mb-4">
+                <div class="card text-center bg-gradient-cyan">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-4 text-left mt-0">
+                                <h2 class="">@ViewBag.totalCxyly</h2>
+                                <p class="fw-bold">Đơn xử lý</p>
+                            </div>
+                            <div class="col-4 text-center mt-0">
+                                <h2 class="">@ViewBag.totalDaGiao</h2>
+                                <p class="fw-bold">Đơn đã giao</p>
+                            </div>
+                            <div class="col-4 text-right">
+                                <h2 class="">@ViewBag.totalHuy</h2>
+                                <p class="fw-bold"> Đơn hủy</p>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a class="aaa" href="/Admin/DonHang/HoaDon">Chi tiết <i class="fa  fa-arrow-alt-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 mt-4 mb-4">
+                <div class="card text-center bg-gradient-lime">
+                    <div class="card-body ">
+                        <div class="row">
+                            <div class="col-8 text-left">
+                                <h2 class="">@string.Format("{0:#,##0 đ}", ViewBag.totalDoanhThuThang)</h2>
+                                <p class="fw-bold">Doanh thu tháng</p>
+                            </div>
+                            <div class="col-4 text-right">
+                                <i class="fa-solid fa-3x fa-coins"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a class="aaa" href="/Admin/Home/DanhMucSanPham">Chi tiết <i class="fa  fa-arrow-alt-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</header>
+
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="hero">
+                <div class="container  container1">
+                    <div class="clock">
+                        <span id="hrs">00</span>
+                        <span> :</span>
+                        <span id="min">00</span>
+                        <span> :</span>
+                        <span id="sec">00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="hero1">
+                <div class="calendar">
+                    <div class="left1">
+                        <p id="date">11</p>
+                        <p id="day">Thứ tư</p>
+                    </div>
+                    <div class="right1">
+                        <p id="month">tháng ba</p>
+                        <p id="year">2022</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    <link href="~/Assets/css/indexadmin.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        let hrs = document.getElementById("hrs");
+        let min = document.getElementById("min");
+        let sec = document.getElementById("sec");
+
+        setInterval(() => {
+            let crurrentTime = new Date();
+
+            hrs.innerHTML = crurrentTime.getHours();
+            min.innerHTML = crurrentTime.getMinutes();
+            sec.innerHTML = crurrentTime.getSeconds()
+        }, 1000)
+
+            ;
+    </script>
+    <script>
+        const date = document.getElementById("date");
+        const day = document.getElementById("day");
+        const month = document.getElementById("month");
+        const year = document.getElementById("year");
+
+        const today = new Date();
+
+        const weekDays = ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"];
+
+        const allMonths = [
+            "Tháng Một", "Tháng Hai", "Tháng Ba", "Tháng Tư", "Tháng Năm", "Tháng Sáu",
+            "Tháng Bảy", "Tháng Tám", "Tháng Chín", "Tháng Mười", "Tháng Mười Một", "Tháng Mười Hai"
+        ];
+
+
+        date.innerHTML = (today.getDate() < 10 ? "0" : "") + today.getDate();
+        day.innerHTML = weekDays[today.getDay()];
+        month.innerHTML = allMonths[today.getMonth()];
+        year.innerHTML = today.getFullYear();
+    </script>
+}
