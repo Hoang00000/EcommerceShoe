@@ -1,0 +1,95 @@
+﻿@model IEnumerable<dotMVC.Data.mausac>
+
+@{
+    ViewBag.Title = "Mau";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container col-md-8">
+    <h2 class="text-center">Danh sách tất cả các màu</h2>
+
+    <p>
+        @Html.ActionLink("Thêm mới", "ThemMau", null, new { @class = "btn btn-success btn-sm" })
+    </p>
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <!-- Màu đen cho header -->
+            <tr>
+                <th>
+                    Màu sắc
+                </th>
+                <th>Hiển thị</th>
+                <th>Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.mausac1)
+                    </td>
+                    <td>
+                        @if (@Html.DisplayFor(modelItem => item.an).ToString() == "0")
+                        {
+                            @:Hiện
+                        }
+                        else
+                        {
+                            @:Ẩn
+                        }
+                    </td>
+                    <td>
+                        @if (@Html.DisplayFor(modelItem => item.an).ToString() == "0")
+                        {
+                            @Html.ActionLink("Sửa", "Editmau", new { id = item.Idmau }, new { @class = "btn btn-primary btn-sm m-2 edit-button", data_id = item.Idmau }) <!-- Thêm class và data-id -->
+                            @Html.ActionLink("Xóa", "DeleteMauAction", new { id = item.Idmau }, new { @class = "btn btn-danger btn-sm delete-button", data_id = item.Idmau }) <!-- Thêm class và data-id -->
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Sửa", "Editmau", new { id = item.Idmau }, new { @class = "btn btn-primary btn-sm m-2 edit-button", data_id = item.Idmau })
+                            @Html.ActionLink("Hiện", "UpMauAction", new { id = item.Idmau }, new { @class = "btn btn-danger btn-sm" })
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            // Bắt sự kiện click vào nút "Xóa"
+            $('.delete-button').click(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của nút
+
+                var deleteUrl = $(this).attr('href'); // Lấy URL xóa từ thuộc tính href của liên kết
+                var row = $(this).closest('tr'); // Lấy hàng của bảng chứa liên kết "Xóa"
+
+                // Hiển thị hộp thoại SweetAlert để xác nhận xóa
+                Swal.fire({
+                    title: 'Bạn chắc chắn muốn xóa?',
+                    text: 'Màu này sẽ ẩn đi đến khi bạn cập nhật lại',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Xóa',
+                    cancelButtonText: 'Hủy'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Nếu người dùng xác nhận xóa, chuyển hướng đến action xóa
+                        window.location.href = deleteUrl;
+                    }
+                });
+            });
+
+            // Hiệu ứng hover cho nút Sửa
+            $('.edit-button').hover(function () {
+                $(this).toggleClass('btn-outline-primary btn-primary');
+            });
+        });
+    </script>
+}

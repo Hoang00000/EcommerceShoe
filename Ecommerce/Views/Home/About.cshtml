@@ -1,0 +1,211 @@
+﻿<link rel="stylesheet" href="~/Assets/css/About.css" />
+@model IEnumerable<dynamic>
+@{
+    ViewBag.Title = "About";
+}
+<section class="bg-success py-5">
+    <div class="container">
+        <div class="row align-items-center py-5">
+            <div class="col-md-8 text-white">
+                <h1>
+                    SHOESPECTRO: Phong Cách Bắt Đầu Từ Bước Chân
+                </h1>
+                <p>
+                    Tại SHOESPECTRO, chúng tôi không chỉ bán giày, chúng tôi mang đến cho bạn phong cách và sự tự tin. Với sự kết hợp hoàn hảo giữa chất lượng và thiết kế, mỗi đôi giày của chúng tôi đều là một tuyên ngôn thời trang. 
+                </p>
+
+                <p>
+                    Hãy để SHOESPECTRO cùng bạn tạo nên dấu ấn riêng trong từng bước đi.
+                </p>
+
+            </div>
+            <div class="col-md-4">
+                <img src="~/Assets/img/about-hero.svg" alt="About Hero">
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section class="container py-5">
+    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+        <div class="carousel-inner" style="height: 500px;">
+            <!-- Set a fixed height -->
+            <div class="carousel-item active">
+                <img src="~/Assets/img/ANH_GIAY/background1.png" class="d-block w-100 img-fluid" alt="..." style="height: 100%; object-fit: cover;">
+            </div>
+            <div class="carousel-item">
+                <img src="~/Assets/img/ANH_GIAY/background2.png" class="d-block w-100 img-fluid" alt="..." style="height: 100%; object-fit: cover;">
+            </div>
+            <div class="carousel-item">
+                <img src="~/Assets/img/ANH_GIAY/giay-the-theo-mua-he.jpg" class="d-block w-100 img-fluid" alt="..." style="height: 100%; object-fit: cover;">
+            </div>
+        </div>
+    </div>
+
+</section>
+<!-- Start YouTube Video Section -->
+<section class="container py-5">
+    <div class="row justify-content-center">
+        @{
+            var firstItem = Model.FirstOrDefault(item => item.Maab == 1); // Compare as integer
+            if (firstItem != null)
+            {
+                <div class="col-md-12 mb-2">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title text-center" style="color: green;">@Html.Raw(firstItem.Tieude)</h5>
+                            <p class="card-text">@Html.Raw(firstItem.Noidung)</p>
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</section>
+
+<section class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12 mb-4">
+            @*<h2 class="text-center">Bài viết mới nhất</h2>*@
+        </div>
+        <div class="row">
+            @for (int i = 0; i < Model.Count(); i += 3)
+            {
+                for (int j = i; j < i + 3 && j < Model.Count(); j++)
+                {
+                    var item = Model.ElementAt(j);
+                    if (item.Maab != 1) // Skip the first item already displayed
+                    {
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h3 class="card-title text-center">@Html.Raw(item.Tieude)</h3>
+                                    <p class="card-text">
+                                        @Html.Raw(item.Noidung.Substring(0, Math.Min(item.Noidung.Length, 200)))
+                                        @if (item.Noidung.Length > 200)
+                                        {
+                                            <span>...</span>
+                                        }
+                                    </p>
+                                    <a class="btn btn-link stretched-link" data-toggle="collapse" href="#collapse-@item.Maab" role="button" aria-expanded="false" aria-controls="collapse-@item.Maab">Xem chi tiết</a>
+                                    <div class="collapse" id="collapse-@item.Maab">
+                                        <div class="mt-3">
+                                            <p>@Html.Raw(item.Noidung)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+</section>
+<!-- Bootstrap JS and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+
+<!-- Include Bootstrap JS and jQuery -->
+<!-- End YouTube Video Section -->
+<!-- Close Banner -->
+<!-- Start Section -->
+<!-- End Section -->
+<!-- Start Brands -->
+<section class=" py-5">
+    <div class="container my-4">
+        <div class="row text-center py-3">
+            <div class="col-lg-6 m-auto">
+                <h1 class="h1" ">Các nhãn hiệu của chúng tôi</h1>
+            </div>
+            <div class="col-lg-9 m-auto tempaltemo-carousel">
+                <div class="row d-flex flex-row">
+                    <!--Controls-->
+                    <div class="col-1 align-self-center">
+                        <a class="h1" href="#templatemo-slide-brand" role="button" data-bs-slide="prev">
+                            <i class="text-light fas fa-chevron-left"></i>
+                        </a>
+                    </div>
+                    <!--End Controls-->
+                    <!--Carousel Wrapper-->
+                    <div class="col">
+                        <div class="carousel slide carousel-multi-item pt-2 pt-md-0" id="templatemo-slide-brand" data-bs-ride="carousel">
+                            <!--Slides-->
+                            <div class="carousel-inner product-links-wap" role="listbox">
+
+                                <!--First slide-->
+                                <div class="carousel-item active">
+                                    <div class="row">
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="/Assets/img/brand_01.png" alt="Brand"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/Assets/img/brand_02.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/Assets/img/brand_03.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/Assets/img/brand_04.png" alt="Brand Logo"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End First slide-->
+                                <!--Second slide-->
+                                <div class="carousel-item">
+                                    <div class="row">
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/Assets/img/brand_01.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/Assets/img/brand_02.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/Assets/img/brand_03.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/Assets/img/brand_04.png" alt="Brand Logo"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End Second slide-->
+                                <!--Third slide-->
+                                <div class="carousel-item">
+                                    <div class="row">
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/Assets/img/brand_01.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/Assets/img/brand_02.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/Assets/img/brand_03.png" alt="Brand Logo"></a>
+                                        </div>
+                                        <div class="col-3 p-md-5">
+                                            <a href="#"><img class="img-fluid brand-img" src="~/Assets/img/brand_04.png" alt="Brand Logo"></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--End Third slide-->
+
+                            </div>
+                            <!--End Slides-->
+                        </div>
+                    </div>
+                    <!--End Carousel Wrapper-->
+                    <!--Controls-->
+                    <div class="col-1 align-self-center">
+                        <a class="h1" href="#templatemo-slide-brand" role="button" data-bs-slide="next">
+                            <i class="text-light fas fa-chevron-right"></i>
+                        </a>
+                    </div>
+                    <!--End Controls-->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--End Brands-->

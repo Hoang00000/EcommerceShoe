@@ -1,0 +1,94 @@
+﻿@model dotMVC.Data.cthanghoa
+@{
+    var CTHangHoa = (List<dotMVC.Data.cthanghoa>)ViewData["CTHangHoa"];
+}
+
+<div class="card product-wap rounded-0 h-100">
+    <div class="card d-flex flex-column align-items-stretch h-100">
+        <img class="card-img img-fluid" src="~/assets/img/@Model.hinh" alt="Product Image">
+        <div class="card-img-overlay product-overlay d-flex align-items-center justify-content-center">
+            <ul class="list-unstyled mb-0">
+                <li><a class="btn btn-success text-white" href="@Url.Action("Details", "Product", new { id = Model.idhanghoa })"><i class="far fa-heart"></i></a></li>
+                <li><a class="btn btn-success text-white mt-2" href="@Url.Action("Details", "Product", new { id = Model.idhanghoa })"><i class="far fa-eye"></i></a></li>
+                <li><a class="btn btn-success text-white mt-2" href="@Url.Action("Details", "Product", new { id = Model.idhanghoa })"><i class="fas fa-cart-plus"></i></a></li>
+            </ul>
+        </div>
+        <div class="d-flex justify-content-between px-2 mb-0 mt-2">
+            <p class="mb-2">@ViewData["size"] Size - @ViewData["color"] Màu</p>
+            <p class="mb-2">
+                @ViewData["soluotxem"] Lượt xem
+            </p>
+        </div>
+        <a href="@Url.Action("Details", "Product", new { id = Model.idhanghoa })" class="h3 px-2 text-start text-decoration-none">@ViewData["tenhh"]</a>
+        <div class="card-footer d-flex justify-content-between align-items-center mt-auto px-3">
+            @if (Convert.ToInt32(ViewData["ProductDiscount"]) == 0)
+            {
+                <p class="text-center mb-0">
+                    @String.Format("{0:N0}", ViewData["ProductPrice"])
+                    ₫
+                </p>
+            }
+            else
+            {
+                <p class="text-center mb-0 text-danger discount">
+                    @String.Format("{0:N0}", ViewData["ProductDiscount"]) ₫
+                </p>
+                <p class="text-center mb-0 text-decoration-line-through price">
+                    @String.Format("{0:N0}", ViewData["ProductPrice"]) ₫
+                </p>
+                <p class="sale-price-discount mb-0 discount-percentage"></p>
+            }
+        </div>
+    </div>
+</div>
+
+
+<style>
+
+
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        padding-bottom: 20px:
+    }
+
+    .card-img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+    }
+
+
+    .sale-price-discount {
+        border: 1px solid #e71a3c;
+        color: #e71a3c;
+        border-Radius: 3px;
+        padding: 2px 5px;
+        background: #ffe9ea;
+    }
+
+    .
+</style>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const discountElements = document.querySelectorAll('.card');
+
+        discountElements.forEach(function (card) {
+            const discountElement = card.querySelector('.discount');
+            const priceElement = card.querySelector('.price');
+            const discountPercentageElement = card.querySelector('.discount-percentage');
+
+            if (discountElement && priceElement && discountPercentageElement) {
+                const discountPrice = parseInt(discountElement.innerText.replace(/₫|,/g, '').trim());
+                const originalPrice = parseInt(priceElement.innerText.replace(/₫|,/g, '').trim());
+
+                if (originalPrice > 0) {
+                    const discountPercentage = ((originalPrice - discountPrice) / originalPrice) * 100;
+                    discountPercentageElement.innerText = `-${discountPercentage.toFixed(0)}%`;
+                }
+            }
+        });
+    });
+</script>

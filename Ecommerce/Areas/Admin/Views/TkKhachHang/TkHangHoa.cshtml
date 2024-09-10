@@ -1,0 +1,116 @@
+﻿@model IEnumerable<dotMVC.Models.HangHoaStatisticsViewModel>
+
+@{
+    ViewBag.Title = "Thống Kê Hàng Hóa Bán Nhiều Nhất";
+    var data = Model ?? new List<dotMVC.Models.HangHoaStatisticsViewModel>();
+}
+
+<h2>Thống Kê Hàng Hóa Bán Nhiều Nhất</h2>
+
+<div>
+    <select id="filterType" onchange="filterData()">
+        <option value="day">Ngày</option>
+        <option value="month">Tháng</option>
+        <option value="year">Năm</option>
+    </select>
+
+    <input type="date" id="filterDate" />
+    <input type="month" id="filterMonth" style="display:none;" />
+    <input type="number" id="filterYear" min="2000" max="2100" style="display:none;" />
+
+    <button onclick="applyFilter()">Áp Dụng</button>
+</div>
+
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<div id="legendContainer" style="margin-top: 20px;"></div>
+
+@section Scripts {
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script type="text/javascript">
+        function filterData() {
+            var filterType = document.getElementById('filterType').value;
+            document.getElementById('filterDate').style.display = filterType === 'day' ? 'inline' : 'none';
+            document.getElementById('filterMonth').style.display = filterType === 'month' ? 'inline' : 'none';
+            document.getElementById('filterYear').style.display = filterType === 'year' ? 'inline' : 'none';
+        }
+
+        function applyFilter() {
+            var filterType = document.getElementById('filterType').value;
+            var filterValue;
+
+            if (filterType === 'day') {
+                filterValue = document.getElementById('filterDate').value;
+            } else if (filterType === 'month') {
+                filterValue = document.getElementById('filterMonth').value;
+            } else {
+                filterValue = document.getElementById('filterYear').value;
+            }
+
+            // Construct the URL based on the selected filter
+         window.location.href = '@Url.Action("TkHangHoa", "TkKhachHang", new { area = "Admin" })' + '?filterType=' + filterType + '&filterValue=' + filterValue;
+
+        }
+
+        window.onload = function () {
+            var chartData = @Html.Raw(Json.Encode(Model)); // Encode dữ liệu JSON từ Model vào JavaScript
+            var totalQuantity = chartData.reduce((sum, item) => sum + item.TotalQuantity, 0);
+
+            var dataPoints = [];
+            chartData.forEach(function(item) {
+                var percentage = (item.TotalQuantity / totalQuantity * 100).toFixed(2);
+                dataPoints.push({ y: item.TotalQuantity, label: item.TenHH, indexLabel: percentage + "%" });
+            });
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                theme: "light2",
+                animationEnabled: true,
+                title: {
+                    text: "Top 10 Hàng Hóa Bán Nhiều Nhất"
+                },
+                legend: {
+                    cursor: "pointer",
+                    itemclick: explodePie
+                },
+                data: [{
+                    type: "pie",
+                    indexLabelPlacement: "inside",
+                    indexLabelFontColor: "white", // Ensure the label is visible on the colored segment
+                    toolTipContent: "<b>{label}</b>: {y} ({indexLabel})",
+                    dataPoints: dataPoints
+                }]
+            });
+
+            chart.render();
+
+            function explodePie(e) {
+                if (typeof (e.dataPoint.exploded) === "undefined" || !e.dataPoint.exploded) {
+                    e.dataPoint.exploded = true;
+                } else {
+                    e.dataPoint.exploded = false;
+                }
+                chart.render();
+            }
+
+            // Custom legend
+            var legendContainer = document.getElementById("legendContainer");
+            var legendHTML = "";
+            chartData.forEach(function (dataPoint, index) {
+                legendHTML += "<div style='display: inline-block; margin-right: 10px;'>";
+                legendHTML += "<div style='width: 20px; height: 20px; background-color: " + getRandomColor() + "; display: inline-block;'></div>";
+                legendHTML += " " + dataPoint.TenHH;
+                legendHTML += "</div>";
+            });
+            legendContainer.innerHTML = legendHTML;
+
+            // Function to generate random colors
+            function getRandomColor() {
+                var letters = '0123456789ABCDEF';
+                var color = '#';
+                for (var i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+        }
+    </script>
+}

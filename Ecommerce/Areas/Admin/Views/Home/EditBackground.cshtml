@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "EditBackground";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<dotMVC.Data.background>
+
+<h2>Chỉnh sửa background</h2>
+<div class="container">
+    @foreach (var product in Model)
+    {
+        <form action="@Url.Action("EditBackgroundAction")" method="POST">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="matn" value="@product.matn" />
+            <div class="form-group">
+                <label for="ten">Tên:</label>
+                <input type="text" class="form-control" name="ten" value="@product.ten" />
+            </div>
+            <div class="form-group">
+                <label for="tieude">Tiêu đề:</label>
+                <input type="text" class="form-control" name="tieude" value="@product.tieude" />
+            </div>
+            <div class="form-group">
+                <label for="url">Hình ảnh:</label>
+                <div class="input-group">
+                    <input type="text" class="form-control" name="url" id="url" required readonly />
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary" onclick="BrowseServer()">Chọn ảnh</button>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success">Edit</button>
+        </form>
+        <div class="mt-3 text-center">
+            <a href="@Url.Action("Background")" class="btn btn-secondary">Back to List</a>
+        </div>
+    }
+</div>
+@section Scripts
+{
+    <script src="~/Areas/Admin/Content/ckfinder/ckfinder.js"></script>
+    <script>
+        function BrowseServer() {
+            var finder = new CKFinder();
+            finder.selectActionFunction = SetFileField;
+            finder.popup();
+        }
+        function SetFileField(fileUrl) {
+            var fileName = fileUrl.split('/').pop();
+            document.getElementById('url').value = fileName;
+            $(`input[name=url]`).val(fileName);
+        }
+        $(document).ready(function () {
+            $('form').submit(function (event) {
+                event.preventDefault(); // Ngăn chặn form submit mặc định
+
+                var form = $(this);
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        // Hiển thị thông báo SweetAlert khi sửa thành công
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sửa thành công!',
+                            text: 'Nhấn OK để trở về trang Background',
+                            showConfirmButton: true, // Hiển thị nút "OK"
+                            confirmButtonText: 'OK' // Đặt nhãn cho nút "OK"
+                        }).then(function () {
+                            // Chuyển hướng về trang Background
+                            window.location.href = '@Url.Action("Background")';
+                        });
+                    },
+                    error: function () {
+                        // Xử lý lỗi nếu có
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Đã xảy ra lỗi!',
+                            text: 'Đã có lỗi xảy ra trong quá trình sửa.',
+                            showConfirmButton: true, // Hiển thị nút "OK"
+                            confirmButtonText: 'OK' // Đặt nhãn cho nút "OK"
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}
+

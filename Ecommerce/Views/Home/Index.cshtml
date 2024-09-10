@@ -1,0 +1,315 @@
+﻿ <!-- Start Banner Hero -->
+
+@{
+    var CTHangHoa = (List<dotMVC.Data.cthanghoa>)ViewData["CTHangHoa"];
+    var Loai = (List<dotMVC.Data.loai>)ViewData["Loai"];
+
+}
+
+@model IEnumerable<dotMVC.Data.hanghoa>
+
+<div id="template-mo-zay-hero-carousel" class="carousel slide" data-bs-ride="carousel">
+    <ol class="carousel-indicators">
+        <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="0" class="active"></li>
+        <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="1"></li>
+        <li data-bs-target="#template-mo-zay-hero-carousel" data-bs-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <div class="container">
+                <div class="row p-5">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src="~/Assets/img/banner_img_01.jpg" alt="">
+                    </div>
+                    <div class="col-lg-6 mb-0 d-flex align-items-center">
+                        <div class="text-align-left align-self-center">
+                            <h1 class="h1 text-success">Chào Mừng Đến Với <b>SHOESPECTRO</b></h1>
+                            <p>
+                                Khám phá bộ sưu tập giày dép đa dạng, kết hợp giữa phong cách và chất lượng tại <strong>SHOESPECTRO</strong>. Từ giày thể thao năng động đến giày cao gót thanh lịch, chúng tôi có tất cả những gì bạn cần để nâng tầm phong cách của mình.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="container">
+                <div class="row p-5">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src="~/Assets/img/banner_img_02.jpg" alt="">
+                    </div>
+                    <div class="col-lg-6 mb-0 d-flex align-items-center">
+                        <div class="text-align-left">
+                            <h1 class="h1">
+                                Phong Cách & Sự Tự Tin
+                            </h1>
+                            <p>
+                                <strong>SHOESPECTRO</strong> mang đến những đôi giày không chỉ đẹp mà còn thoải mái. Bước vào thế giới thời trang với những thiết kế hiện đại và chất lượng vượt trội, giúp bạn tự tin thể hiện phong cách riêng ở bất cứ đâu.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <div class="container">
+                <div class="row p-5">
+                    <div class="mx-auto col-md-8 col-lg-6 order-lg-last">
+                        <img class="img-fluid" src="~/Assets/img/banner_img_03.jpg" alt="">
+                    </div>
+                    <div class="col-lg-6 mb-0 d-flex align-items-center">
+                        <div class="text-align-left">
+                            <h1 class="h1">
+                                Mỗi Bước Đi Là Một Trải Nghiệm
+                            </h1>
+                            <p>
+                                Tại <strong>SHOESPECTRO</strong>, chúng tôi hiểu rằng đôi giày hoàn hảo có thể thay đổi cả ngày của bạn. Hãy cùng khám phá những đôi giày tinh tế, được thiết kế để đồng hành cùng bạn trên mọi hành trình.
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="carousel-control-prev text-decoration-none w-auto ps-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="prev">
+        <i class="fas fa-chevron-left"></i>
+    </a>
+    <a class="carousel-control-next text-decoration-none w-auto pe-3" href="#template-mo-zay-hero-carousel" role="button" data-bs-slide="next">
+        <i class="fas fa-chevron-right"></i>
+    </a>
+</div>
+<section class="container py-5">
+    <div class="row text-center pt-3">
+        <div class="col-lg-8 m-auto">
+            <h2 class="heading"><span>Giày nam </span> thời thượng </h2>
+
+            <p>
+                Khám phá bộ sưu tập giày nam của chúng tôi, từ giày thể thao năng động đến giày da thanh lịch, đáp ứng mọi phong cách và nhu cầu.
+            </p>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            @foreach (var i in Loai)
+            {
+                <div class="col-6 col-md-2 mt-2 d-flex flex-column align-items-center">
+                    <a href="@Url.Action("categories", "product", new { loai = i.maloai })">
+                        <img src="~/Assets/img/@(i.link + ".jpg")" class="rounded-circle img-fluid p-4">
+                    </a>
+                    <h5 class="text-center mt-3 mb-3 text-truncate" style="max-width: 100%; white-space: nowrap; overflow: hidden;">@i.tenloai</h5>
+                    <a href="@Url.Action("categories", "product", new { loai = i.maloai })" class="btn btn-success text-center">Go Shop</a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<section class="about" id="about">
+    <div class="container">
+        <h1 class="heading"><span>Dịch vụ</span> chất lượng</h1>
+        <div class="row">
+            <div class="video-container">
+                <video src="~/Assets/img/about/video.mp4" autoplay loop muted></video>
+            </div>
+            <div class="content">
+                <h3>
+                    Tại Sao Chọn SHOESPECTRO?
+                </h3>
+                <p>
+                    - Tại SHOESPECTRO, chúng tôi cam kết cung cấp giày nam chất lượng cao, được chọn lọc kỹ lưỡng từ các thương hiệu uy tín và thiết kế tinh tế. Mỗi đôi giày không chỉ đẹp mắt mà còn bền bỉ, với chất liệu và độ hoàn thiện đảm bảo sự thoải mái tối ưu và phù hợp với phong cách cá nhân của bạn.
+                    <br />
+                    <br />
+                    - Chúng tôi đặc biệt chú trọng đến dịch vụ khách hàng, với đội ngũ nhân viên tận tâm và chuyên nghiệp, luôn sẵn sàng hỗ trợ bạn từ việc lựa chọn sản phẩm cho đến quá trình mua sắm và hậu mãi. Tại SHOESPECTRO, sự hài lòng của bạn không chỉ là mục tiêu, mà là động lực để chúng tôi không ngừng nâng cao chất lượng và dịch vụ.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>
+<section>
+    <div class="container text-center">
+        <br />
+        <br />
+        <hr />
+        <h1 class="heading"><span>Sản phẩm</span> đang HOT</h1>
+        <br />
+        <br />
+        <div class="row mb-5">
+            @foreach (var i in Model)
+            {
+                <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                    @{
+                        Html.RenderAction("itemProduct", "Product", new { hh = i });
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+
+<style>
+    :root {
+        --pink: #ff3399;
+    }
+
+    .heading {
+        text-align: center;
+        font-size: 4rem;
+        color: black;
+        padding: 1rem;
+        margin: 2rem 0;
+        background: rgba(255, 51, 153, 0.05);
+    }
+
+        .heading span {
+            color: var(--pink);
+        }
+
+    .about .row {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+        padding: 2rem 0;
+        padding-bottom: 3rem;
+    }
+
+        .about .row .video-container {
+            flex: 1 1 40rem;
+            position: relative;
+        }
+
+            .about .row .video-container video {
+                width: 100%;
+                border: 1.5rem solid #ffffff;
+                border-radius: .5rem;
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 1);
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .about .row .content {
+            flex: 1 1 35rem;
+        }
+
+            .about .row .content h3 {
+                font-size: 2.5rem;
+                color: #333;
+            }
+
+            .about .row .content p {
+                font-size: 1.6rem;
+                color: #666;
+                line-height: 1.5;
+                margin: 1rem 0;
+            }
+
+            .about .row .content .btn {
+                display: inline-block;
+                padding: 0.8rem 3rem;
+                border-radius: 0.5rem;
+                background: var(--pink);
+                color: #fff;
+                font-size: 1.7rem;
+                cursor: pointer;
+                transition: background 0.3s ease;
+                text-decoration: none;
+            }
+
+                .about .row .content .btn:hover {
+                    background: #e60073;
+                }
+
+    .icons-container {
+        background: #eee;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+
+        .icons-container icons {
+            background: #fff;
+            border: .1rem solid rgba(0,0,0,1);
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            flex: 1 1 25rem;
+        }
+
+            .icons-container icons img {
+                height: 5rem;
+                margin-right: 2rem;
+            }
+
+        .icons-container .icons h3 {
+            color: #333;
+            padding-bottom: .5rem;
+            font-size: 2rem;
+        }
+
+    icons-container .icons span {
+        color: #555;
+        font-size: 1.7rem;
+    }
+
+    .icon-img {
+        width: 100px;
+        height: 100px; /* Ensures the images are uniformly sized */
+        object-fit: cover; /* Ensures the images cover the specified dimensions */
+        margin-bottom: 1rem;
+    }
+</style>
+
+
+
+<section class="icons-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="icons text-center mb-3">
+                    @*<img src="~/Assets/img/about/icon1.png" alt="" class="img-fluid" />*@
+                    <i class="fa-solid fa-truck-fast" style="font-size: 80px;"></i>
+                    <div class="info">
+                        <h3 class="p-0 m-0">Free ship</h3>
+                        <span>Ở các thành phố</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="icons text-center mb-3">
+                    @*<img src="~/Assets/img/about/icon2.png" alt="" class="img-fluid" />*@
+                    <i class="fa-solid fa-money-bill" style="font-size: 80px;"></i>
+                    <div class="info">
+                        <h3 class="p-0 m-0">Giao dịch bảo mật</h3>
+                        <span>Trên từng hoá đơn</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="icons text-center mb-3">
+                    @*<img src="~/Assets/img/about/icon3.png" alt="" class="img-fluid" />*@
+                    <i class="fa-solid fa-money-bill-transfer" style="font-size: 80px;"></i>
+                    <div class="info">
+                        <h3 class="p-0 m-0">7 ngày hoàn trả</h3>
+                        <span>Nếu sản phẩm lỗi/sai</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="icons text-center mb-3">
+                    @*<img src="~/Assets/img/about/icon4.png" alt="" class="img-fluid" />*@
+                    <i class="fa-solid fa-gift" style="font-size: 80px;"></i>
+                    <div class="info">
+                        <h3 class="p-0 m-0">Khuyến mãi và quà</h3>
+                        <span>Trên từng hoá đơn</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- End Featured Product -->

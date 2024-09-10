@@ -1,0 +1,46 @@
+﻿@model IEnumerable<dotMVC.Data.about>
+
+@{
+    ViewBag.Title = "About";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<h2 class="mt-4 text-center">Danh sách tin tức</h2>
+<div class="">
+
+    <p class="mb-4">
+        @Html.ActionLink("Thêm mới", "AddAbout", null, new { @class = "btn btn-primary" })
+    </p>
+
+    @if (Model.Any())
+    {
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th class="text-center">Tiêu đề</th>
+                    <th class="text-center">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="text-center">@Html.DisplayFor(modelItem => item.tieude)</td>
+                        <td class="text-center">
+                            @Html.ActionLink("Sửa", "EditAbout", new { id = item.maab }, new { @class = "btn btn-warning btn-sm" })
+                            @Html.ActionLink("Xóa", "XoaAbout", new { id = item.maab }, new { @class = "btn btn-danger btn-sm ml-2" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center" colspan="2" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">
+                            @Html.Raw(item.noidung)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p class="text-center">Danh sách tin tức còn trống.</p>
+    }
+</div>

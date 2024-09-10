@@ -1,0 +1,76 @@
+﻿@model IEnumerable<dotMVC.Models.HoaDonViewModel>
+
+@{
+    ViewBag.Title = "HoaDon";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <h2 class="text-center mt-4 mb-4">Danh sách hóa đơn</h2>
+
+    <table class="table table-striped table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Mã hóa đơn</th>
+                <th>Mã khách hàng <br /> Địa chỉ - SDT</th>
+                <th>Tình trạng</th>
+                <th>Sản phẩm mua <br /> màu - size - số lượng</th>
+                <th>Ngày đặt</th>
+                <th>Tổng tiền</th>
+                <th>Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.MaSoHD)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Email) <br /> @item.diachi <br /> @item.sdt</td>
+                    <td>
+                        <span class="badge @GetPillClass(item.TenTT)">
+                            @item.TenTT
+                        </span>
+                    </td>
+                    <td>
+                        @{ var i = 1; }
+                        @foreach (var sp in item.SanPham)
+                        {
+                            @:@i. @sp.TenHH <br /> Màu: @sp.MauSac - Size: @sp.Size - Số lượng: @sp.SoLuongMua <br />
+                            i++;
+                        }
+                    </td>
+                    <td>@Html.DisplayFor(modelItem => item.NgayDat)</td>
+                    <td>@string.Format("{0:#,##0} đ", item.TongTien)</td>
+
+                    <td>
+                        <button class="btn btn-warning btn-sm mr-1" onclick="location.href='@Url.Action("Edit", "DonHang", new { id = item.MaSoHD })'">
+                            <i class="fa fa-edit"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script>
+        @functions {
+            public string GetPillClass(string tinhtrang)
+            {
+                switch (tinhtrang)
+                {
+                    case "Đơn hàng đã được giao":
+                        return "badge-success";
+                    case "Đang chờ xử lí":
+                        return "badge-warning";
+                    case "Đơn hàng đã bị hủy":
+                        return "badge-danger";
+                    default:
+                        return "badge-secondary";
+                }
+            }
+        }
+    </script>
+}

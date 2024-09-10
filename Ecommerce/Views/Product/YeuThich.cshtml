@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "Danh Sách Yêu Thích";
+    var yeuThich = Session["Yeuthich"] as List<dotMVC.Models.YeuThich>;
+}
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Thông tin sản phẩm</th>
+                        <th scope="col">Đơn giá</th>
+                        <th scope="col">Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (yeuThich != null && yeuThich.Any())
+                    {
+                        foreach (var i in yeuThich)
+                        {
+                            <tr data-id="@i.MaHH" data-size="@i.IdSize" data-color="@i.IdMau">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-3">
+                                            <img src="~/assets/img/@i.Hinh" class="img-fluid rounded" style="width: 80px; height: 80px;" alt="">
+                                        </div>
+                                        <div>
+                                            <p class="mb-1">@i.TenHH</p>
+                                            <p class="mb-1">Màu: @i.MauSac</p>
+                                            <p class="mb-1">Kích thước: @i.Size</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle text-center">
+                                    <p class="mb-0">@i.DonGia.ToString("#")</p>
+                                </td>
+                                <td class="align-middle text-center">
+                                    <button class="btn btn-md rounded bg-light border remove-yeuthich">
+                                        <i class="fa fa-times text-danger"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center">Danh sách yêu thích của bạn trống</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    // Hàm cập nhật số lượng yêu thích
+    function updateYeuThichCount() {
+        $.ajax({
+            url: '@Url.Action("LaySoLuongYeuThich", "Product")',
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                $('#yeuThichCount').text(data.count); // Update the count in the navbar
+                // Optionally, update a JavaScript variable to keep track of the count
+                window.yeuThichCount = data.count;
+            },
+            error: function(xhr, status, error) {
+                console.error('Error while retrieving wishlist count:', error);
+            }
+        });
+    }
+
+    // Call the update function initially when the document is ready
+    $(document).ready(function() {
+        updateYeuThichCount(); // Update count when page loads
+
+        // Handle remove button click
+        $('.remove-yeuthich').click(function() {
+            var row = $(this).closest('tr');
+            var id = row.data('id');
+            var size = row.data('size');
+            var color = row.data('color');
+
+            // Show confirmation dialog using SweetAlert
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn xóa?',
+                text: "Sản phẩm này sẽ bị xóa khỏi danh sách yêu thích!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Vâng, xóa nó!',
+                cancelButtonText: 'Hủy'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If confirmed, make the AJAX request to remove the item
+                    $.ajax({
+                        url: '@Url.Action("XoaYeuThich", "Product")',
+                        type: 'POST',
+                        data: { id: id, size: size, color: color },
+                        success: function(response) {
+                            if (response.message === "true") {
+                                row.remove(); // Remove the row from the table
+                                updateYeuThichCount(); // Update the wishlist count
+                                Swal.fire(
+                                    'Đã xóa!',
+                                    'Sản phẩm đã được xóa khỏi danh sách yêu thích.',
+                                    'success'
+                                );
+                            } else {
+                                Swal.fire(
+                                    'Lỗi!',
+                                    response.error,
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error while removing item from wishlist:', error);
+                            Swal.fire(
+                                'Lỗi!',
+                                'Đã có lỗi xảy ra khi xóa sản phẩm.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>

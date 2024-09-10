@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "AddChiTietHangHoa";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    var Mausac = ((List<dotMVC.Data.mausac>)ViewData["Mausac"]).ToList();
+    var Sizegiay = ((List<dotMVC.Data.sizegiay>)ViewData["Sizegiay"]).ToList();
+    var cthanghoa = (List<dotMVC.Data.hanghoa>)ViewData["Cthanghoa"];
+}
+
+<h2 class="text-center">Thêm chi tiết sản phẩm</h2>
+<form action="@Url.Action("AddChiTietHHAction")" method="POST" class="form-container container">
+    <div class="form-group">
+        <label for="idhh">Sản phẩm:</label>
+        <select name="idhh" id="idhh" class="form-control" required>
+            @foreach (var idhh in cthanghoa)
+            {
+                <option value="@idhh.mahh">@idhh.tenhh</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="idmau">Màu sắc:</label>
+        <select name="idmau" id="idmau" class="form-control" required>
+            <option value="" disabled selected>Chọn màu</option>
+            @foreach (var mausac in Mausac)
+            {
+                <option value="@mausac.Idmau">@mausac.mausac1</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="idsize">Size:</label>
+        <select name="idsize" id="idsize" class="form-control" required>
+            <option value="" disabled selected>Chọn size</option>
+            @foreach (var sizegiay in Sizegiay)
+            {
+                <option value="@sizegiay.Idsize">@sizegiay.size</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="dongia">Đơn giá:</label>
+        <input type="number" name="dongia" id="dongia" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="soluongton">Số lượng tồn:</label>
+        <input type="number" name="soluongton" id="soluongton" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="giamgia">Giảm giá:</label>
+        <input type="number" name="giamgia" id="giamgia" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="hinh">Hình ảnh:</label>
+        <div class="input-group">
+            <input type="text" name="hinh" id="hinh" class="form-control" required readonly />
+            <div class="input-group-append">
+                <button type="button" class="btn btn-secondary" onclick="BrowseServer()">Chọn ảnh</button>
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block" id="submitBtn">Thêm sản phẩm</button>
+</form>
+<link href="~/Areas/Admin/Content/CSS/StyleSheet1.css" rel="stylesheet" />
+@section Scripts
+{
+    <script src="~/Areas/Admin/Content/ckfinder/ckfinder.js"></script>
+    <script>
+        function BrowseServer() {
+            var finder = new CKFinder();
+            finder.selectActionFunction = SetFileField;
+            finder.popup();
+        }
+        function SetFileField(fileUrl) {
+            var fileName = fileUrl.split('/').pop();
+            document.getElementById('hinh').value = fileName;
+            $(`input[name=hinh]`).val(fileName);
+        }
+    </script>
+}

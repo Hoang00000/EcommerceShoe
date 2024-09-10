@@ -1,0 +1,70 @@
+﻿@model IEnumerable<dotMVC.Data.hoadon>
+
+@{
+    ViewBag.Title = "Đơn Hàng Của Bạn";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Danh Sách Đơn Hàng</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Mã Số HĐ</th>
+                    <th scope="col">Ngày Đặt</th>
+                    <th scope="col">Tổng Tiền</th>
+                    <th scope="col">Địa Chỉ</th>
+                    <th scope="col">Số ĐT</th>
+                    <th scope="col">Trạng Thái</th>
+                    <th scope="col">Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.masohd</td>
+                        <td>@item.ngaydat.ToString("dd/MM/yyyy")</td>
+                        <td>@String.Format("{0:C}", item.tongtien)</td>
+                        <td>@item.diachi</td>
+                        <td>@item.sdt</td>
+                        <td>
+                            @switch (item.matt)
+                            {
+                                case 1:
+                                    <span class="badge bg-success">Giao thành công</span>;
+                                    break;
+                                case 2:
+                                    <span class="badge bg-danger">Đơn hàng đã bị hủy</span>;
+                                    break;
+                                case 3:
+                                    <span class="badge bg-warning">Đang chờ xử lí</span>;
+                                    break;
+                                case 4:
+                                    <span class="badge bg-secondary">Chưa thanh toán</span>;
+                                    break;
+                                case 5:
+                                    <span class="badge bg-primary">Đã thanh toán, chờ giao</span>;
+                                    break;
+                                default:
+                                    <span class="badge bg-secondary">Trạng thái không xác định</span>;
+                                    break;
+                            }
+                        </td>
+                        <td>
+                            <a href="@Url.Action("ChiTiet", "Profile", new { id = item.masohd })" class="btn btn-info btn-sm">Xem Chi Tiết</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning text-center">
+            Bạn chưa có đơn hàng nào.
+        </div>
+    }
+</div>

@@ -1,0 +1,411 @@
+﻿@{
+    ViewBag.Title = "DonHang";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container col-md-12 mr-4 ">
+    <div class="row">
+        <div class="col-md-3 mt-4 ">
+            <div class="card text-center" style="background-color: white; color: black;">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-8 text-left">
+                            <h2 class="">@string.Format("{0:#,##0 đ}", ViewBag.totalDoanhThuThang)</h2>
+                            <p class="fw-bold">Tổng doanh thu</p>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center rounded-circle " style="width: 50px; height: 50px; background-color:seashell; ">
+                            <i class="fa-solid fa-2x fa-dollar-sign" style="color: #74C0FC;"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-3 mt-4 ">
+            <div class="card text-center" style="background-color: white; color: black;">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-8 text-left">
+                            <h2 class="">@ViewBag.totalCxyly</h2>
+                            <p class="fw-bold">Đơn đặt hàng</p>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center rounded-circle " style="width: 50px; height: 50px; background-color:seashell; ">
+
+                            <i class="fa-solid fa-2x fa-spinner" style="color: #FFD43B;"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-3 mt-4 ">
+            <div class="card text-center" style="background-color: white; color: black;">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-8 text-left">
+                            <h2 class="">@ViewBag.totalDaGiao</h2>
+                            <p class="fw-bold">Đơn đã giao</p>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center rounded-circle " style="width: 50px; height: 50px; background-color:seashell; ">
+                            <i class="fa-solid fa-2x fa-check" style="color: #63E6BE;"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-md-3 mt-4 ">
+            <div class="card text-center" style="background-color: white; color: black;">
+                <div class="card-body ">
+                    <div class="row">
+                        <div class="col-8 text-left">
+                            <h2 class="">@ViewBag.totalHuy</h2>
+                            <p class="fw-bold">Đơn đã hủy</p>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center rounded-circle " style="width: 50px; height: 50px; background-color:seashell; ">
+                            <i class="fa-solid fa-2x fa-x" style="color: #f40b0b;"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<div class="container col-md-12 mr-4">
+    <div class="row">
+        <div class="col-md-8 mt-4">
+            <div class="row ">
+                <div class="col-md-6"><h3>Doanh thu</h3></div>
+                <div class="col-md-6">
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="selectPeriod">Chọn khoảng thời gian:</label>
+                        <select class="form-select" id="selectPeriod" onchange="reloadChart(this.value)">
+                            <option value="week">Theo tuần</option>
+                            <option value="month">Theo tháng</option>
+                            <option value="year">Theo năm</option>
+                        </select>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div id="main" style="width: 800px; height: 400px;"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <link href="~/Areas/Admin/Content/CSS/StyleSheet3.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.2.2/echarts.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var selectPeriod = document.getElementById("selectPeriod");
+            selectPeriod.value = "week";
+            reloadChart('week');
+        });
+
+        function reloadChart(period) {
+            if (period === 'week') {
+                var chartDom = document.getElementById('main');
+                var myChart = echarts.init(chartDom);
+                var option;
+
+                // Dữ liệu từ ViewBag
+                var data = @Html.Raw(Json.Encode(ViewBag.DonHangData));
+
+                // Danh sách 7 ngày trong tuần
+                var ngayTrongTuan = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+                option = {
+                    title: {
+                        text: 'Doanh thu mỗi ngày của tuần',
+                        left: 'center'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: ngayTrongTuan
+                    },
+                    yAxis: {
+                        type: 'value',
+                        max: Math.max(...data.map(item => item.TongTien)) * 2
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+crossStyle: {
+                                color: '#999'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            data: data.map(item => item.TongTien),
+                            type: 'line',
+                            smooth: true, // Để làm cho đường cong mượt hơn
+                            itemStyle: {
+                                color: '#ff7f0e' // Màu sắc của đường
+                            },
+                            lineStyle: {
+                                width: 2, // Độ rộng của đường
+                                type: 'dashed' // Kiểu đường
+                            },
+                            areaStyle: {
+                                color: 'rgba(255, 127, 14, 0.3)' // Màu sắc của khu vực dưới đường
+                            }
+                        }
+                    ]
+                };
+
+
+                myChart.setOption(option);
+            } else if (period === 'month') {
+                var chartDom = document.getElementById('main');
+                var myChart = echarts.init(chartDom);
+                var option;
+
+                // Assuming ViewBag.DonHangThangData is an array of objects with Ngay and TongTien properties
+                var data = @Html.Raw(Json.Encode(ViewBag.DonHangThangData));
+
+        var monthData = {};
+        data.forEach(function (item) {
+            var day = parseInt(item.Thang);
+            monthData[day] = (monthData[day] || 0) + item.TongTien;
+        });
+
+        // Generate array of days in the month
+        var daysInMonth = Array.from({ length: 31 }, (_, i) => i + 1);
+
+        var chartDom = document.getElementById('main');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        option = {
+            title: {
+                text: 'Doanh thu mỗi ngày của tháng',
+                left: 'center'
+            },
+            xAxis: {
+                type: 'category',
+                data: daysInMonth,
+                name: 'Ngày'
+            },
+            yAxis: {
+                type: 'value',
+                name: 'Doanh thu tổng cộng',
+                max: Math.max(...Object.values(monthData)) * 1.5
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    crossStyle: {
+                        color: '#999'
+                    }
+                }
+            },
+            series: [
+                {
+                    data: daysInMonth.map(function (day) {
+                        return monthData[day] || 0;
+                    }),
+                    type: 'line',
+                    smooth: true,
+                    lineStyle: {
+                        color: 'blue'
+                    },
+                    itemStyle: {
+                        color: 'blue'
+},
+                    areaStyle: {
+                        color: 'lightblue'
+                    }
+                }
+            ]
+        };
+
+        myChart.setOption(option);
+            } else if (period === 'month') {
+    var chartDom = document.getElementById('main');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    // Dữ liệu từ ViewBag
+    var data = @Html.Raw(Json.Encode(ViewBag.DonHangListOfMonth));
+
+    // Danh sách các ngày trong tháng (tùy thuộc vào số ngày trong tháng)
+    var daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0).getDate();
+    var ngayTrongThang = [];
+    for (var i = 1; i <= daysInMonth; i++) {
+        ngayTrongThang.push(i);
+    }
+
+    option = {
+        title: {
+            text: 'Doanh thu mỗi ngày của tháng',
+            left: 'center'
+        },
+        xAxis: {
+            type: 'category',
+            data: ngayTrongThang,
+            name: 'Tháng'
+        },
+        yAxis: {
+            type: 'value',
+            max: Math.max(...data.map(item => item.TongTien)) * 2
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                crossStyle: {
+                    color: '#999'
+                }
+            }
+        },
+        series: [
+            {
+                data: data.map(item => item.TongTien),
+                type: 'line',
+                smooth: true, // Để làm cho đường cong mượt hơn
+                itemStyle: {
+                    color: '#ff7f0e' // Màu sắc của đường
+                },
+                lineStyle: {
+                    width: 2, // Độ rộng của đường
+                    type: 'dashed' // Kiểu đường
+                },
+                areaStyle: {
+                    color: 'rgba(255, 127, 14, 0.3)' // Màu sắc của khu vực dưới đường
+                }
+            }
+        ]
+    };
+
+
+    myChart.setOption(option);
+            }
+    else if (period === 'year') {
+    var chartDom = document.getElementById('main');
+    var myChart = echarts.init(chartDom);
+    var option;
+
+    // Dữ liệu từ ViewBag
+    var data = @Html.Raw(Json.Encode(ViewBag.donHangNamList));
+
+    // Danh sách 12 tháng trong năm
+    var thangTrongNam = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+
+                option = {
+                    title: {
+                        text: 'Doanh thu mỗi tháng của năm',
+                        left: 'center',
+                        textStyle: {
+                            fontSize: 18,
+                            fontWeight: 'bold'
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: thangTrongNam,
+                        axisLine: {
+                            lineStyle: {
+                                color: '#333'
+                            }
+},
+                        axisLabel: {
+                            textStyle: {
+                                fontSize: 12
+                            }
+                        }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        max: Math.max(...data.map(item => item.TongTien)) * 2,
+                        axisLine: {
+                            lineStyle: {
+                                color: '#333'
+                            }
+                        },
+                        axisLabel: {
+                            textStyle: {
+                                fontSize: 12
+                            }
+                        },
+                        splitLine: {
+                            lineStyle: {
+                                type: 'dashed'
+                            }
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+                            crossStyle: {
+                                color: '#999'
+                            }
+                        }
+                    },
+                    series: [
+                        {
+                            data: data.map((item, index) => ({
+                                value: item.TongTien,
+                                name: thangTrongNam[index]
+                            })),
+                            type: 'line',
+                            smooth: true, // Để làm cho đường cong mượt hơn
+                            itemStyle: {
+                                color: '#2ca02c' // Màu sắc của đường (xanh lá)
+                            },
+                            lineStyle: {
+                                width: 2, // Độ rộng của đường
+                                type: 'solid' // Kiểu đường
+                            },
+                            areaStyle: {
+                                color: 'rgba(44, 160, 44, 0.3)' // Màu sắc của khu vực dưới đường (xanh lá nhạt)
+                            },
+                            emphasis: {
+                                focus: 'series',
+                                itemStyle: {
+                                    color: '#1f77b4' // Màu sắc của điểm khi hover (xanh lam)
+                                },
+                                lineStyle: {
+                                    width: 3, // Độ rộng của đường khi hover
+                                    type: 'solid',
+                                    color: '#1f77b4' // Màu sắc của đường khi hover (xanh lam)
+                                },
+                                areaStyle: {
+                                    color: 'rgba(31, 119, 180, 0.3)' // Màu sắc của khu vực dưới đường khi hover (xanh lam nhạt)
+},
+                                label: {
+                                    show: true,
+                                    position: 'top',
+                                    formatter: function (params) {
+                                        return `Doanh thu tháng ${params.name}: ${params.value}`;
+                                    },
+                                    fontSize: 10,
+                                    color: '#000'
+                                }
+                            }
+                        }
+                    ]
+                };
+
+
+
+    myChart.setOption(option);
+}
+
+
+        else {
+                document.getElementById('main').innerHTML = '';
+            }
+        }
+    </script>
+}

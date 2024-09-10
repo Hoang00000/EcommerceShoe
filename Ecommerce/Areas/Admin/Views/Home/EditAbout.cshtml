@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "EditAbout";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<dotMVC.Data.about>
+<h2 class="text-center my-4">Sửa trang tin tức</h2>
+<div class="container">
+    @foreach (var product in Model)
+    {
+        <form action="@Url.Action("EditAboutAction")" method="POST" class="mb-4">
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                <input type="hidden" name="maab" value="@product.maab" />
+                <label for="tieude" class="form-label">Tiêu đề</label>
+                <input type="text" class="form-control" name="tieude" value="@product.tieude" />
+            </div>
+
+            <div class="form-group">
+                <label for="noidung" class="form-label">Nội dung</label>
+                <textarea style="height:1000px" class="form-control" name="noidung" id="noidung-@product.maab" rows="10">@product.noidung</textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-2">Edit</button>
+        </form>
+    }
+
+    <div class="text-center">
+        @Html.ActionLink("Quay về", "About", null, new { @class = "btn btn-secondary" })
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        @foreach (var product in Model)
+        {
+            <text>
+                CKEDITOR.replace("noidung-@product.maab");
+            </text>
+        }
+    </script>
+}

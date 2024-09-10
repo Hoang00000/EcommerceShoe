@@ -1,0 +1,84 @@
+﻿@model dotMVC.Areas.Admin.Model.ThongkeViewModel.ThongKeSanPhamViewModel
+
+@{
+    ViewBag.Title = "Thống Kê Sản Phẩm";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Thống Kê Sản Phẩm Theo Loại Giày</h2>
+
+<div class="row mb-3">
+    @foreach (var item in Model.ThongKeLoaiGiay)
+    {
+        var detailId = "detail_" + item.TenLoaiGiay.Replace(" ", "_");
+
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="card-title">@item.TenLoaiGiay</h5>
+                    <p class="card-text">Số lượng sản phẩm: @item.SoLuongSanPham</p>
+                    <button class="btn btn-primary" type="button" onclick="showDetails('@detailId')">
+                        Xem sản phẩm
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div id="product-details" class="row mb-3" style="display:none;">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title text-center" id="detail-title"></h5>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Mã Sản Phẩm</th>
+                            <th>Tên Sản Phẩm</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detail-body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            var sanPhamData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ThongKeLoaiGiay));
+
+            window.showDetails = function (detailId) {
+                var detailsElement = document.getElementById('product-details');
+                var detailTitle = document.getElementById('detail-title');
+                var detailBody = document.getElementById('detail-body');
+
+                var tenLoaiGiay = detailId.replace("detail_", "").replace("_", " ");
+
+                var selectedLoaiGiay = sanPhamData.find(item => item.TenLoaiGiay === tenLoaiGiay);
+
+                if (selectedLoaiGiay) {
+                    detailTitle.innerText = selectedLoaiGiay.TenLoaiGiay;
+                    detailBody.innerHTML = '';
+
+                    selectedLoaiGiay.SanPhamTheoLoai.forEach(function (sp) {
+                        var row = document.createElement('tr');
+                        var cellMa = document.createElement('td');
+                        cellMa.innerText = sp.mahh;
+                        var cellTen = document.createElement('td');
+                        cellTen.innerText = sp.tenhh;
+
+                        row.appendChild(cellMa);
+                        row.appendChild(cellTen);
+                        detailBody.appendChild(row);
+                    });
+
+                    detailsElement.style.display = 'block';
+}
+            }
+        });
+    </script>
+}

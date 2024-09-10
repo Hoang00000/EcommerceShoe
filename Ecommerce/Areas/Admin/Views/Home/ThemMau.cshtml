@@ -1,0 +1,64 @@
+﻿@model dotMVC.Data.mausac
+
+@{
+    ViewBag.Title = "ThemMau";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <h2 class="text-center">Thêm màu</h2>
+
+    <form id="addColorForm" action="@Url.Action("ThemMauAction")" method="POST" class="my-4">
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <label for="mausac">Tên màu:</label>
+            <input type="text" name="mausac" id="mausac" class="form-control" required />
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn btn-primary">Thêm</button>
+    </form>
+
+    <div class="text-center">
+        @Html.ActionLink("Quay lại", "Mau", null, new { @class = "btn btn-secondary" })
+    </div>
+</div>
+
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('#addColorForm').submit(function (event) {
+                event.preventDefault(); // Ngăn chặn hành động mặc định của form
+
+                var form = $(this);
+                $.ajax({
+                    url: form.attr('action'),
+                    type: form.attr('method'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        // Hiển thị thông báo SweetAlert khi thêm màu thành công
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Thêm màu thành công!',
+                            text: 'Nhấn OK để đóng thông báo',
+                            showConfirmButton: true, // Hiển thị nút "OK"
+                            confirmButtonText: 'OK' // Đặt nhãn cho nút "OK"
+                        }).then(function () {
+                            // Không cần làm gì sau khi nhấn OK
+                        });
+                    },
+                    error: function () {
+                        // Xử lý lỗi nếu có
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Đã xảy ra lỗi!',
+                            text: 'Đã có lỗi xảy ra trong quá trình thêm màu.',
+                            showConfirmButton: true, // Hiển thị nút "OK"
+                            confirmButtonText: 'OK' // Đặt nhãn cho nút "OK"
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

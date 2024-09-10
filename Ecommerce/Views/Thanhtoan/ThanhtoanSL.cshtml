@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "ThanhtoanSL";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var gh = Session["Giohang"] as List<dotMVC.Models.GioHang>;
+    double total = 0;
+}
+
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <h1 class="mb-4">Billing details</h1>
+        <form id="paymentForm" action="@Url.Action("ThanhToanSLAction")" method="POST">
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+                    <div class="form-item">
+                        <label class="form-label my-3">Họ tên <sup>*</sup></label>
+                        <input type="text" value="@ViewBag.name" class="form-control">
+                        <input type="text" name="hoten" hidden value="@ViewBag.userId" class="form-control">
+                    </div>
+
+                    <div class="form-item">
+                        <label class="form-label my-3">Số điện thoại<sup>*</sup></label>
+                        <input type="tel" value="@ViewBag.PhoneNumber" name="sodienthoai" required class="form-control">
+                    </div>
+
+                    <div class="form-item">
+                        <label class="form-label my-3">Địa chỉ nhận hàng <sup>*</sup></label>
+                        <input type="text" value="@ViewBag.Address" name="diachi" required class="form-control">
+                    </div>
+                    <br />
+                    <div class="form-item">
+                        <textarea name="ghichu" class="form-control" spellcheck="false" cols="30" rows="11" placeholder="Ghi chú (nếu có)"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-6 col-xl-5">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Hình</th>
+                                    <th scope="col">Tên</th>
+                                    <th scope="col">Màu - Size</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Tổng tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (gh != null && gh.Any())
+                                {
+                                    foreach (var i in gh)
+                                    {
+                                        total += i.tongtien;
+                                        <tr>
+                                            <td class="py-5">@i.mahh</td>
+                                            <th scope="row">
+                                                <div class="d-flex align-items-center mt-2">
+                                                    <img src="~/Assets/img/@i.hinh" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
+                                                </div>
+                                            </th>
+                                            <td class="py-5">@i.tenhh</td>
+                                            <td class="py-5">@i.mausac - @i.size</td>
+                                            <td class="py-5">@string.Format("{0:N0}", i.giamgia)</td>
+                                            <td class="py-5">@i.soluong</td>
+                                            <td class="py-5">@string.Format("{0:N0}", i.tongtien)</td>
+                                        </tr>
+
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="8" class="text-center">Giỏ hàng của bạn trống</td>
+                                    </tr>
+                                }
+                                <tr>
+                                    <th scope="row">
+                                    </th>
+                                    <td class="py-5"></td>
+                                    <td class="py-5"></td>
+                                    <td class="py-5">
+                                        <p class="mb-0 text-dark py-3">Subtotal</p>
+                                    </td>
+                                    <td class="py-5">
+                                        <div class="py-3 border-bottom border-top">
+                                            <p class="mb-0 text-dark"> @string.Format("{0:N0}", total)</p>
+                                            <input type="hidden" name="total" value="@total" />
+                                        </div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row g-4 text-center align-items-center justify-content-center pt-4">
+                        <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Thanh toán (COD)</button>
+                        <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" onclick="payWithVNPay()">Thanh toán bằng VNPAY</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+    function payWithVNPay() {
+        var hoten = document.querySelector("input[name='hoten']").value;
+        var sodienthoai = document.querySelector("input[name='sodienthoai']").value;
+        var diachi = document.querySelector("input[name='diachi']").value;
+        var tongtien = document.querySelector("input[name='total']").value;
+
+        var params = new URLSearchParams({
+            hoten: hoten,
+            sodienthoai: sodienthoai,
+            diachi: diachi,
+            tongtien: tongtien
+        });
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "@Url.Action("VnpayPaymentAction", "ThanhToan")", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var data = JSON.parse(xhr.responseText);
+                if (data.paymentUrl) {
+                    window.location.href = data.paymentUrl;
+                } else {
+                    alert("Payment URL not received.");
+                }
+            }
+        };
+
+        xhr.send(params.toString());
+    }
+
+
+    </script>
+
+
+}
